@@ -21,8 +21,8 @@ docker network create proxy-network
 - *DEVEL*: `docker-compose -f stack-plex.yml -f stack-plex.devel.yml -p plex up -d`
 
 ## Deploy HomeAssistant
-- `mkdir -pv $HOME/homeassistant-data`
-- `docker volume create --name homeassistant-data-volume -d local -o o=bind -o type=none -o device=$HOME/homeassistant-data`
+- `mkdir -pv $HOME/homeassistant-config`
+- `docker volume create --name homeassistant-config-volume -d local -o o=bind -o type=none -o device=$HOME/homeassistant-config`
 - `docker-compose -f stack-homeassistant.yml -p homeassistant up -d`
 - *RPI*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.armhf.yml -p homeassistant up -d`
 - *DEVEL*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.devel.yml -p homeassistant up -d`

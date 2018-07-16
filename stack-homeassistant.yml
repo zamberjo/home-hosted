@@ -10,7 +10,8 @@ services:
     ports:
       - "8123:8123"
     volumes:
-      - homeassistant-data-volume:/data:z
+      - homeassistant-config-volume:/config
+      - /etc/localtime:/etc/localtime:ro
     healthcheck:
       test: nc -z 127.0.0.1 8123
       interval: 5s
@@ -18,5 +19,5 @@ services:
       retries: 7
 
 volumes:
-  homeassistant-data-volume:
+  homeassistant-config-volume:
     external: true

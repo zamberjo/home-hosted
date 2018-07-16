@@ -10,7 +10,7 @@ RUN apk add --no-cache \
 	python3 \
 	ca-certificates \
   && addgroup -g ${GUID} hass \
-  && adduser -h /data -D -G hass -s /bin/sh -u ${UID} hass \
+  && adduser -h /config -D -G hass -s /bin/sh -u ${UID} hass \
   &&  pip3 install --upgrade --no-cache-dir pip \
   && apk add --no-cache --virtual=build-dependencies \
   	build-base \
@@ -39,4 +39,4 @@ RUN apk add --no-cache \
 
 EXPOSE 8123
 
-ENTRYPOINT ["hass", "--open-ui", "--config=/data"]
+ENTRYPOINT ["hass", "--open-ui", "--config=/config"]
