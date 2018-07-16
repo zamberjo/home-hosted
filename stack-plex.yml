@@ -4,10 +4,20 @@ services:
   plex:
     build:
       context: ./plex
+    image: plex
     network_mode: "host"
     ports:
       - 32400:32400
-    restart: always
+    restart: unless-stopped
     volumes:
       - ${CONFIG_PATH}:/config
-      - ${MEDIA_PATH}:/data
+      - flood-data-volume:/data
+    healthcheck:
+      test: nc -z 127.0.0.1 32400
+      interval: 5s
+      timeout: 10s
+      retries: 7
+
+volumes:
+  flood-data-volume:
+    external: true

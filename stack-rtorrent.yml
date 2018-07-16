@@ -23,11 +23,11 @@ services:
     tty: true
     # networks:
     #   - rtorrent-network
-    # healthcheck:
-    #   test: nc -z 127.0.0.1 5000
-    #   interval: 5s
-    #   timeout: 10s
-    #   retries: 7
+    healthcheck:
+      test: nc -z 127.0.0.1 3000
+      interval: 5s
+      timeout: 10s
+      retries: 7
 
 volumes:
   flood-data-volume:
