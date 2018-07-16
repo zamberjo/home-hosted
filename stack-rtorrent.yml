@@ -1,0 +1,40 @@
+version: '2.1'
+
+services:
+  rtorrent:
+    build:
+      context: ./rtorrent
+    image: rtorrent_flood
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+      - "49184:49184"
+      - "49184:49184/udp"
+    environment:
+      - RTORRENT_VER=${RTORRENT_VER:-0.9.7}
+      - LIBTORRENT_VER=${LIBTORRENT_VER:-0.13.7}
+      - MEDIAINFO_VER=${MEDIAINFO_VER:-18.05}
+      - FLOOD_VER=${FLOOD_VER:-master}
+      - FLOOD_SECRET=${FLOOD_SECRET:-supersecret}
+    # entrypoint: docker-entrypoint.sh
+    volumes:
+      - flood-data-volume:/data:z
+      - flood-config-volume:/flood-db:z
+    # networks:
+    #   - rtorrent-network
+    # healthcheck:
+    #   test: nc -z 127.0.0.1 5000
+    #   interval: 5s
+    #   timeout: 10s
+    #   retries: 7
+
+volumes:
+  flood-data-volume:
+    external: true
+  flood-config-volume:
+    external: true
+
+# networks:
+#   rtorrent-network:
+#   # proxy-network:
+#   #   external: true

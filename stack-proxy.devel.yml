@@ -1,0 +1,19 @@
+version: '2.1'
+
+services:
+  traefik:
+    restart: 'no'
+    command:
+      - --checkNewVersion=false
+      - --api
+      - --api.entrypoint=panel
+      - --api.dashboard
+      - --docker
+      - --docker.watch
+      - --docker.exposedbydefault=false
+      - --defaultEntryPoints=http
+      - --entryPoints=Name:panel Address::8080
+      - --entryPoints=Name:http Address::80
+      - --logLevel=DEBUG
+      - --accessLog
+      - --accessLog.filters.statusCodes=200,204,300-302,401,403,500
