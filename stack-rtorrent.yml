@@ -20,6 +20,7 @@ services:
     volumes:
       - flood-data-volume:/data:z
       - flood-config-volume:/flood-db:z
+    tty: true
     # networks:
     #   - rtorrent-network
     # healthcheck:
