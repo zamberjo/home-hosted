@@ -1,0 +1,7 @@
+version: '2.1'
+
+services:
+  homeassistant:
+    build:
+      args:
+        ARCH: arm32v6

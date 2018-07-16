@@ -1,0 +1,21 @@
+version: '2.1'
+
+services:
+  homeassistant:
+    build:
+      context: ./homeassistant
+    image: homeassistant
+    restart: unless-stopped
+    ports:
+      - "8123:8123"
+    volumes:
+      - homeassistant-data-volume:/data:z
+    healthcheck:
+      test: nc -z 127.0.0.1 8123
+      interval: 5s
+      timeout: 10s
+      retries: 7
+
+volumes:
+  homeassistant-data-volume:
+    external: true
