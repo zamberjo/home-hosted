@@ -84,9 +84,7 @@ RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} \
     && apk del build-dependencies \
     && rm -rf /var/cache/apk/* /tmp/*
 
-COPY ./rootfs/etc/s6.d /etc/
-COPY ./rootfs/home /home/
-COPY ./rootfs/usr /usr/
+COPY rootfs /
 
 # RUN chmod +x /usr/local/bin/* /etc/s6.d/*/* /etc/s6.d/.s6-svscan/* \
 RUN chmod +x /usr/local/bin/* /etc/s6.d/*/* \
