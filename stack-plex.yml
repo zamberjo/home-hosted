@@ -2,17 +2,18 @@ version: "2.1"
 
 services:
   plex:
-    image: plexinc/pms-docker
+    build:
+      context: ./plex
     network_mode: "host"
     ports:
       - 32400:32400
     restart: unless-stopped
-    environment:
-      - PUID=${PLEX_PUID:-1000}
-      - PGID=${PLEX_PGID:-1000}
+    # environment:
+    #   - PUID=${PLEX_PUID:-1000}
+    #   - PGID=${PLEX_PGID:-1000}
     volumes:
-      - rtorrent-downloads-volume:/root/Library
-      - plex-library-volume:/media
+      - plex-config-volume:/config
+      - plex-library-volume:/data
     healthcheck:
       test: nc -z 127.0.0.1 32400
       interval: 5s
@@ -20,7 +21,8 @@ services:
       retries: 7
 
 volumes:
-  plex-library-volume: {}
+  plex-config-volume:
+    external: {}
   rtorrent-downloads-volume:
     external: {}
 
