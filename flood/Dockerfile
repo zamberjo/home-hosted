@@ -15,9 +15,9 @@ RUN apk -U upgrade \
         g++ \
         build-base \
     && git clone --depth 1 https://github.com/jfurrow/flood /usr/src/app \
+    && mv /tmp/config.js /usr/src/app/config.js \
     && cd /usr/src/app \
     && npm install && npm cache clean --force \
-    && mv /tmp/config.js /usr/src/app/config.js \
     && npm run build \
     && rm -rf /var/cache/apk/* /tmp/* \
     && apk del --force \
