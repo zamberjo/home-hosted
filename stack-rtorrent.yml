@@ -17,10 +17,10 @@ services:
       - RT_PORT_RANGE=${RTORRENT_PORT_RANGE:-6890-6890}
       - RT_DHT_PORT=${RTORRENT_DHT_PORT:-6881}
     volumes:
-      - rtorrent-incoming-volume:/var/lib/rtorrent/incoming
-      - rtorrent-session-volume:/var/lib/rtorrent/session
-      - rtorrent-downloads-volume:/var/lib/rtorrent/downloads
-      - rtorrent-watch-volume:/var/lib/rtorrent/watch
+      - rtorrent-incoming-volume:/data/incoming
+      - rtorrent-session-volume:/data/session
+      - rtorrent-downloads-volume:/data/downloads
+      - rtorrent-watch-volume:/data/watch
     networks:
       - rtorrent-network
     healthcheck:
@@ -58,9 +58,8 @@ services:
 volumes:
   rtorrent-incoming-volume: {}
   rtorrent-session-volume: {}
+  rtorrent-watch-volume: {}
   rtorrent-downloads-volume:
-    external: true
-  rtorrent-watch-volume:
     external: true
   flood-volume: {}
 
