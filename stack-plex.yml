@@ -2,35 +2,28 @@ version: "2.1"
 
 services:
   plex:
-    image: linuxserver/plex
+    image: plexinc/pms-docker
     network_mode: "host"
     ports:
       - 32400:32400
-      - 32400:32400/udp
-      - 32469:32469
-      - 32469:32469/udp
-      - 5353:5353/udp
-      - 1900:1900/udp
     restart: unless-stopped
     environment:
       - PUID=${PLEX_PUID:-1000}
       - PGID=${PLEX_PGID:-1000}
     volumes:
-      - plex-config-volume:/config
-      - plex-transcoding-volume:/transcoding
-      - plex-tvshows-volume:/data/tvshows
-      - plex-movies-volume:/data/movies
+      - rtorrent-downloads-volume:/root/Library
+      - plex-library-volume:/media
     healthcheck:
-      test: bash -c '{ </dev/tcp/127.0.0.1/32400; } 2>/dev/null'
+      test: nc -z 127.0.0.1 32400
       interval: 5s
       timeout: 10s
       retries: 7
 
 volumes:
-  plex-transcoding-volume: {}
-  plex-tvshows-volume:
+  plex-library-volume: {}
+  rtorrent-downloads-volume:
     external: {}
-  plex-movies-volume:
-    external: {}
-  plex-config-volume:
-    external: {}
+
+# networks:
+#   proxy-network:
+#     external: true

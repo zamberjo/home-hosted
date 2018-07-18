@@ -2,4 +2,4 @@ version: '2.1'
 
 services:
   plex:
-    image: lsioarmhf/plex
+    image: jaymoulin/plex

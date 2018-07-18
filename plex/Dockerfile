@@ -1,21 +1,9 @@
-ARG ARCH=linuxserver
-FROM ${ARCH}/plex
+FROM resin/rpi-raspbian:jessie
 
 # Dependencies
-RUN apk -U upgrade \
-    && apk add --no-cache --virtual .build-deps -t \
-        locales \
-    && apk add --no-cache --virtual .build-deps \
-        build-base \
-        wget \
-        ca-certificates \
-    && mv /tmp/config.js /usr/src/app/config.js \
-    && cd /usr/src/app \
-    && npm install && npm cache clean --force \
-    && npm run build \
-    && rm -rf /var/cache/apk/* /tmp/* \
-    && apk del --force \
-        .build-deps
+RUN apt-get update \
+ && apt-get upgrade \
+ && apt-get install locales wget ca-certificates -y
 
 # Setup locales
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen \
