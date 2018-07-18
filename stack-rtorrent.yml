@@ -44,6 +44,9 @@ services:
       - MEDIAINFO_VER=${MEDIAINFO_VER:-18.05}
       - FLOOD_VER=${FLOOD_VER:-master}
       - FLOOD_SECRET=${FLOOD_SECRET:-supersecret}
+      - RTORRENT_SCGI_HOST=rtorrent
+    networks:
+      - rtorrent-network
     depends_on:
       - rtorrent
     healthcheck:

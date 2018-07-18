@@ -1,7 +1,7 @@
 version: '2.1'
 
 services:
-  rtorrent:
+  flood:
     build:
       args:
         ARCH: arm32v6
