@@ -14,8 +14,13 @@ docker network create proxy-network
 - `docker-compose -f stack-rtorrent.yml -p rtorrent up -d`
 - *RPI*: `docker-compose -f stack-rtorrent.yml -f stack-rtorrent.armhf.yml -p rtorrent up -d`
 - *DEVEL*: `docker-compose -f stack-rtorrent.yml -f stack-rtorrent.devel.yml -p rtorrent up -d`
+- *USE*: `tvshows` and `movies` tags
 
 ## Deploy Plex
+- `mkdir -pv $HOME/plex/config`
+- `docker volume create --name plex-config-volume -d local -o o=bind -o type=none -o device=$HOME/plex/config`
+- `docker volume create --name plex-tvshows-volume -d local -o o=bind -o type=none -o device=$HOME/downloads/tvshows`
+- `docker volume create --name plex-movies-volume -d local -o o=bind -o type=none -o device=$HOME/downloads/movies`
 - `docker-compose -f stack-plex.yml -p plex up -d`
 - *RPI*: `docker-compose -f stack-plex.yml -f stack-plex.armhf.yml -p plex up -d`
 - *DEVEL*: `docker-compose -f stack-plex.yml -f stack-plex.devel.yml -p plex up -d`
