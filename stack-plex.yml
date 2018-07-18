@@ -13,7 +13,7 @@ services:
     #   - PGID=${PLEX_PGID:-1000}
     volumes:
       - plex-config-volume:/config
-      - plex-library-volume:/data
+      - rtorrent-downloads-volume:/data
     healthcheck:
       test: nc -z 127.0.0.1 32400
       interval: 5s
