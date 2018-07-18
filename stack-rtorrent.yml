@@ -4,38 +4,64 @@ services:
   rtorrent:
     build:
       context: ./rtorrent
-    image: rtorrent_flood
+    image: rtorrent_rtorrent
     restart: unless-stopped
     ports:
+      - "5000:5000"
+      - "6890:6890"
+      - "6881:6881/udp"
+    environment:
+      - RT_UID=${RTORRENT_UID:-1000}
+      - RT_GID=${RTORRENT_GID:-1000}
+      - RT_LOG_LEVEL=${RTORRENT_LOG_LEVEL:-info}
+      - RT_PORT_RANGE=${RTORRENT_PORT_RANGE:-6890-6890}
+      - RT_DHT_PORT=${RTORRENT_DHT_PORT:-6881}
+    volumes:
+      - rtorrent-incoming-volume:/var/lib/rtorrent/incoming
+      - rtorrent-session-volume:/var/lib/rtorrent/session
+      - rtorrent-downloads-volume:/var/lib/rtorrent/downloads
+      - rtorrent-watch-volume:/var/lib/rtorrent/watch
+    networks:
+      - rtorrent-network
+    healthcheck:
+      test: nc -z 127.0.0.1 5000
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  flood:
+    build:
+      context: ./flood
+    restart: unless-stopped
+    image: rtorrent_flood
+    ports:
       - "3000:3000"
-      - "49184:49184"
-      - "49184:49184/udp"
+    volumes:
+      - flood-volume:/data
     environment:
       - RTORRENT_VER=${RTORRENT_VER:-0.9.7}
       - LIBTORRENT_VER=${LIBTORRENT_VER:-0.13.7}
       - MEDIAINFO_VER=${MEDIAINFO_VER:-18.05}
       - FLOOD_VER=${FLOOD_VER:-master}
       - FLOOD_SECRET=${FLOOD_SECRET:-supersecret}
-    # entrypoint: docker-entrypoint.sh
-    volumes:
-      - flood-data-volume:/data:z
-      - flood-config-volume:/flood-db:z
-    tty: true
-    # networks:
-    #   - rtorrent-network
+    depends_on:
+      - rtorrent
     healthcheck:
       test: nc -z 127.0.0.1 3000
-      interval: 5s
-      timeout: 10s
-      retries: 7
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
 volumes:
-  flood-data-volume:
+  rtorrent-incoming-volume: {}
+  rtorrent-session-volume: {}
+  rtorrent-downloads-volume:
     external: true
-  flood-config-volume:
+  rtorrent-watch-volume:
     external: true
+  flood-volume: {}
 
-# networks:
-#   rtorrent-network:
-#   # proxy-network:
-#   #   external: true
+networks:
+  rtorrent-network:
+#   proxy-network:
+#     external: true

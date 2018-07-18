@@ -1,99 +1,56 @@
-ARG ARCH=amd64
-FROM ${ARCH}/alpine:3.8
+FROM alpine:3.8
 
-ARG RTORRENT_VER=${RTORRENT_VER:-0.9.7}
-ARG LIBTORRENT_VER=${LIBTORRENT_VER:-0.13.7}
-ARG MEDIAINFO_VER=${MEDIAINFO_VER:-18.05}
-ARG FLOOD_VER=${FLOOD_VER:-master}
-ARG BUILD_CORES
-
-ENV UID=991 \
-    GID=991 \
-    FLOOD_SECRET=${FLOOD_SECRET:-supersecret} \
-    WEBROOT=/ \
-    RTORRENT_SCGI=0 \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-
-RUN NB_CORES=${BUILD_CORES-`getconf _NPROCESSORS_CONF`} \
-    && apk -U upgrade \
-    && apk add -t build-dependencies \
-        build-base \
-        git \
-        libtool \
-        automake \
-        autoconf \
-        wget \
-        tar \
-        xz \
-        zlib-dev \
-        cppunit-dev \
-        libressl-dev \
-        ncurses-dev \
-        curl-dev \
-        binutils \
-        linux-headers \
-    && apk add \
-        ca-certificates \
-        curl \
-        ncurses \
-        libressl \
-        gzip \
-        zip \
-        zlib \
-        s6 \
-        su-exec \
-        python \
-        nodejs \
-        nodejs-npm \
-        unrar \
-        findutils \
-        libtorrent \
+RUN set -ex \
+    && apk add --no-cache \
+        gettext \
         rtorrent \
-        xmlrpc-c \
-        mktorrent \
-        mediainfo \
-        libmediainfo \
-    # && cd /tmp && mkdir libtorrent rtorrent \
-    # && cd libtorrent && wget -qO- https://github.com/rakshasa/libtorrent/archive/v${LIBTORRENT_VER}.tar.gz | tar xz --strip 1 \
-    # && cd ../rtorrent && wget -qO- https://github.com/rakshasa/rtorrent/releases/download/v${RTORRENT_VER}/rtorrent-${RTORRENT_VER}.tar.gz | tar xz --strip 1 \
-    # && cd /tmp \
-    # && git clone --depth 1 https://github.com/mirror/xmlrpc-c.git \
-    # && git clone --depth 1 https://github.com/Rudde/mktorrent.git \
-    # && cd /tmp/mktorrent && make -j ${NB_CORES} && make install \
-    # && cd /tmp/xmlrpc-c/advanced && ./configure && make -j ${NB_CORES} && make install \
-    # && cd /tmp/libtorrent && ./autogen.sh && ./configure && make -j ${NB_CORES} && make install \
-    # && cd /tmp/rtorrent && ./autogen.sh && ./configure --with-xmlrpc-c && make -j ${NB_CORES} && make install \
-    # && cd /tmp \
-    # && wget -q http://mediaarea.net/download/binary/mediainfo/${MEDIAINFO_VER}/MediaInfo_CLI_${MEDIAINFO_VER}_GNU_FromSource.tar.gz \
-    # && wget -q http://mediaarea.net/download/binary/libmediainfo0/${MEDIAINFO_VER}/MediaInfo_DLL_${MEDIAINFO_VER}_GNU_FromSource.tar.gz \
-    # && tar xzf MediaInfo_DLL_${MEDIAINFO_VER}_GNU_FromSource.tar.gz \
-    # && tar xzf MediaInfo_CLI_${MEDIAINFO_VER}_GNU_FromSource.tar.gz \
-    # && cd /tmp/MediaInfo_DLL_GNU_FromSource && ./SO_Compile.sh \
-    # && cd /tmp/MediaInfo_DLL_GNU_FromSource/ZenLib/Project/GNU/Library && make install \
-    # && cd /tmp/MediaInfo_DLL_GNU_FromSource/MediaInfoLib/Project/GNU/Library && make install \
-    # && cd /tmp/MediaInfo_CLI_GNU_FromSource && ./CLI_Compile.sh \
-    # && cd /tmp/MediaInfo_CLI_GNU_FromSource/MediaInfo/Project/GNU/CLI && make install \
-    # && strip -s /usr/local/bin/rtorrent \
-    # && strip -s /usr/local/bin/mktorrent \
-    # && strip -s /usr/local/bin/mediainfo \
-    # && ln -sf /usr/local/bin/mediainfo /usr/bin/mediainfo \
-    && mkdir /usr/flood \
-    && cd /usr/flood \
-    && wget -qO- https://github.com/jfurrow/flood/archive/${FLOOD_VER}.tar.gz | tar xz --strip 1 \
-    && npm i ajv \
-    && npm install \
-    && npm cache clean --force \
-    && apk del build-dependencies \
-    && rm -rf /var/cache/apk/* /tmp/*
+        su-exec
 
-COPY rootfs /
+COPY rtorrent.rc.template /etc/
+COPY entrypoint.sh /usr/local/bin/
 
-RUN chmod +x /usr/local/bin/* /etc/s6.d/*/* /etc/s6.d/.s6-svscan/* \
-    && cd /usr/flood/ \
-    && npm run build
+# RT_PORT_RANGE=6881-6999
+ENV RT_UID=1000 \
+    RT_GID=1000
 
-VOLUME /data /flood-db
+ENV RT_CHECK_HASH=yes \
+    RT_DHT=auto \
+    RT_DHT_PORT=6881 \
+    RT_DOWNLOAD_RATE=0 \
+    RT_ENCODING=utf8 \
+    RT_LOG_LEVEL=info \
+    RT_LOW_DISKSPACE=2000M \
+    RT_MAX_CONN=50 \
+    RT_MAX_DOWNLOADS_GLOBAL=10 \
+    RT_MAX_MEM_USAGE=1800M \
+    RT_MAX_OPEN_FILES=600 \
+    RT_MAX_OPEN_SOCKETS=300 \
+    RT_MAX_PEERS=52 \
+    RT_MAX_PEERS_SEED=52 \
+    RT_MAX_UPLOADS=10 \
+    RT_MAX_UPLOADS_GLOBAL=20 \
+    RT_MIN_PEERS=40 \
+    RT_MIN_PEERS_SEED=10 \
+    RT_PEER_EXCHANGE=yes \
+    RT_PEERS_DESIRED=80 \
+    RT_PORT_RANDOM=no \
+    RT_PORT_RANGE=6890-6890 \
+    RT_RATIO=enable \
+    RT_RATIO_MAX=2000 \
+    RT_RATIO_MIN=400 \
+    RT_RATIO_UPLOAD=200M \
+    RT_UMASK=0027 \
+    RT_UPLOAD_RATE=200
 
-EXPOSE 3000 49184 49184/udp
+WORKDIR /data
 
-CMD ["run.sh"]
+VOLUME /data/incoming
+VOLUME /data/session
+VOLUME /data/downloads
+# VOLUME /data/watch
+
+EXPOSE 5000 ${RT_PORT_RANGE} ${RT_DHT_PORT}/udp
+
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD []
