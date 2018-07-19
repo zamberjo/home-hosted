@@ -8,8 +8,8 @@ services:
     restart: unless-stopped
     ports:
       - "5000:5000"
-      - "6890:6890"
-      - "6881:6881/udp"
+      # - "6890:6890"
+      # - "6881:6881/udp"
     environment:
       - RT_UID=${RTORRENT_UID:-1000}
       - RT_GID=${RTORRENT_GID:-1000}
