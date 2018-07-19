@@ -20,7 +20,7 @@ services:
     volumes:
       - rtorrent-incoming-volume:/data/incoming
       - rtorrent-session-volume:/data/session
-      - rtorrent-downloads-volume:/data/downloads
+      - rtorrent-downloads-volume:/data/downloads:z
       - rtorrent-watch-volume:/data/watch
     networks:
       - rtorrent-network
