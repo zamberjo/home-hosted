@@ -35,10 +35,10 @@ ENV RT_CHECK_HASH=yes \
     RT_PEERS_DESIRED=80 \
     RT_PORT_RANDOM=no \
     RT_PORT_RANGE=6890-6890 \
-    RT_RATIO=enable \
-    RT_RATIO_MAX=2000 \
-    RT_RATIO_MIN=400 \
-    RT_RATIO_UPLOAD=200M \
+    # RT_RATIO=enable \
+    # RT_RATIO_MAX=2000 \
+    # RT_RATIO_MIN=400 \
+    # RT_RATIO_UPLOAD=200M \
     RT_UMASK=0027
 
 WORKDIR /data
@@ -48,7 +48,8 @@ VOLUME /data/session
 VOLUME /data/downloads
 # VOLUME /data/watch
 
-EXPOSE 5000 ${RT_PORT_RANGE} ${RT_DHT_PORT}/udp
+EXPOSE 5000 ${RT_PORT_RANGE}
+# ${RT_DHT_PORT}/udp
 
 ENTRYPOINT ["entrypoint.sh"]
 
