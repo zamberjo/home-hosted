@@ -22,9 +22,9 @@ services:
 
 volumes:
   plex-config-volume:
-    external: {}
+    external: true
   rtorrent-downloads-volume:
-    external: {}
+    external: true
 
 # networks:
 #   proxy-network:
