@@ -8,12 +8,12 @@ services:
     ports:
       - 32400:32400
     restart: unless-stopped
-    # environment:
-    #   - PUID=${PLEX_PUID:-1000}
-    #   - PGID=${PLEX_PGID:-1000}
+    environment:
+      - PUID=${PLEX_PUID:-1000}
+      - PGID=${PLEX_PGID:-1000}
     volumes:
       - plex-config-volume:/config
-      - rtorrent-downloads-volume:/data
+      - rtorrent-downloads-volume:/data:z
     healthcheck:
       test: nc -z 127.0.0.1 32400
       interval: 5s
@@ -21,8 +21,7 @@ services:
       retries: 7
 
 volumes:
-  plex-config-volume:
-    external: true
+  plex-config-volume: {}
   rtorrent-downloads-volume:
     external: true
 

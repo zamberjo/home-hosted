@@ -8,13 +8,12 @@ services:
     restart: unless-stopped
     ports:
       - "5000:5000"
-      # - "6890:6890"
-      # - "6881:6881/udp"
+      - "6890-6890:6890-6890"
+      - "6881:6881/udp"
     environment:
       - RT_UID=${RTORRENT_UID:-1000}
       - RT_GID=${RTORRENT_GID:-1000}
       # - RT_LOG_LEVEL=${RTORRENT_LOG_LEVEL:-info}
-      # - RT_PORT_RANGE=${RTORRENT_PORT_RANGE:-6890-6890}
       # - RT_PORT_RANDOM=${RT_PORT_RANDOM:-no}
       # - RT_DHT_PORT=${RTORRENT_DHT_PORT:-6881}
     volumes:

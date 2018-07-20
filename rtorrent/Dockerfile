@@ -14,7 +14,7 @@ ENV RT_UID=1000 \
 
 ENV RT_CHECK_HASH=yes \
     RT_DHT=disable \
-    # RT_DHT_PORT=6881 \
+    RT_DHT_PORT=6881 \
     RT_DOWNLOAD_RATE=0 \
     RT_UPLOAD_RATE=200 \
     RT_ENCODING=utf8 \
@@ -48,8 +48,7 @@ VOLUME /data/session
 VOLUME /data/downloads
 # VOLUME /data/watch
 
-EXPOSE 5000 ${RT_PORT_RANGE}
-# ${RT_DHT_PORT}/udp
+EXPOSE 5000 ${RT_PORT_RANGE} ${RT_DHT_PORT}/udp
 
 ENTRYPOINT ["entrypoint.sh"]
 
