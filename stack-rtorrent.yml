@@ -56,9 +56,10 @@ services:
       retries: 3
 
 volumes:
-  rtorrent-incoming-volume: {}
   rtorrent-session-volume: {}
   rtorrent-watch-volume: {}
+  rtorrent-incoming-volume:
+    external: true
   rtorrent-downloads-volume:
     external: true
   flood-volume: {}

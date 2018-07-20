@@ -8,7 +8,8 @@ docker network create proxy-network
 - *DEVEL*: `docker-compose -f stack-proxy.yml -f stack-proxy.devel.yml -p proxy up -d`
 
 ## Deploy rTorrent + Flood
-- `mkdir -pv $HOME/{downloads,watch}`
+- `mkdir -pv $HOME/{downloads,watch,incoming}`
+- `docker volume create --name rtorrent-incoming-volume -d local -o o=bind -o type=none -o device=$HOME/incoming`
 - `docker volume create --name rtorrent-downloads-volume -d local -o o=bind -o type=none -o device=$HOME/downloads`
 - `docker volume create --name rtorrent-watch-volume -d local -o o=bind -o type=none -o device=$HOME/watch`
 - `docker-compose -f stack-rtorrent.yml -p rtorrent up -d`
