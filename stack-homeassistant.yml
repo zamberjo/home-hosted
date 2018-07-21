@@ -2,16 +2,16 @@ version: '2.1'
 
 services:
   homeassistant:
-    build:
-      context: ./homeassistant
-    image: homeassistant
+    image: homeassistant/home-assistant
     restart: unless-stopped
     network_mode: "host"
     ports:
       - "8123:8123"
+    environement:
+      - TZ="Europe/Madrid"
     volumes:
       - homeassistant-config-volume:/config
-      - /etc/localtime:/etc/localtime:ro
+      # - /etc/localtime:/etc/localtime:ro
     healthcheck:
       test: nc -z 127.0.0.1 8123
       interval: 5s

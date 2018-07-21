@@ -1,9 +1,9 @@
 ARG ARCH=amd64
 FROM ${ARCH}/alpine:3.8
 
-ARG TIMEZONE=Europe/Madrid
-ARG UID=1000
-ARG GUID=1000
+ENV TIMEZONE=Europe/Madrid \
+    UID=1000 \
+    GUID=1000
 
 RUN apk add --no-cache \
 	git \
