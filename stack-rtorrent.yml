@@ -35,7 +35,7 @@ services:
     restart: unless-stopped
     image: rtorrent_flood
     ports:
-      - "3000:3000"
+      - "80:3000"
     volumes:
       - flood-volume:/data
     environment:
@@ -45,12 +45,20 @@ services:
       - FLOOD_VER=${FLOOD_VER:-master}
       - FLOOD_SECRET=${FLOOD_SECRET:-supersecret}
       - RTORRENT_SCGI_HOST=rtorrent
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:flood.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+      - 'traefik.docker.network=proxy-network'
     networks:
       - rtorrent-network
+      - proxy-network
     depends_on:
       - rtorrent
     healthcheck:
-      test: nc -z 127.0.0.1 3000
+      test: nc -z 127.0.0.1 80
       interval: 30s
       timeout: 30s
       retries: 3
@@ -66,5 +74,5 @@ volumes:
 
 networks:
   rtorrent-network:
-#   proxy-network:
-#     external: true
+  proxy-network:
+    external: true

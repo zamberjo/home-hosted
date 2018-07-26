@@ -4,9 +4,9 @@ services:
   traefik:
     image: traefik:v1.6.5
     restart: unless-stopped
-    # environment:
-    #   - CLOUDFLARE_EMAIL=${TRAEFIK_CLOUDFLARE_EMAIL}
-    #   - CLOUDFLARE_API_KEY=${TRAEFIK_CLOUDFLARE_API_KEY}
+    environment:
+      - CLOUDFLARE_EMAIL=${TRAEFIK_CLOUDFLARE_EMAIL}
+      - CLOUDFLARE_API_KEY=${TRAEFIK_CLOUDFLARE_API_KEY}
     ports:
       - '80:80'
       - '443:443'
@@ -37,7 +37,8 @@ services:
       - --acme.dnsChallenge
       - --acme.dnsChallenge.provider=cloudflare
       - --acme.dnsChallenge.delayBeforeCheck=0
-      # - --acme.domains=
+      - --acme.domains=*.${DOMAIN}
+      - --acme.domains=${DOMAIN}
       - --acme.caServer=https://acme-v02.api.letsencrypt.org/directory
     labels:
       - 'traefik.enable=true'
