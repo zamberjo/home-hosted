@@ -47,7 +47,7 @@ services:
       - RTORRENT_SCGI_HOST=rtorrent
     labels:
       - 'traefik.enable=true'
-      - 'traefik.port=80'
+      - 'traefik.port=3000'
       - 'traefik.frontend.rule=Host:flood.${DOMAIN}'
       - 'traefik.frontend.passHostHeader=true'
       - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
@@ -58,7 +58,7 @@ services:
     depends_on:
       - rtorrent
     healthcheck:
-      test: nc -z 127.0.0.1 80
+      test: nc -z 127.0.0.1 3000
       interval: 30s
       timeout: 30s
       retries: 3
