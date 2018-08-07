@@ -39,6 +39,7 @@ services:
     volumes:
       - rtorrent-incoming-volume:/data/incoming:z
       - rtorrent-downloads-volume:/data/downloads:z
+      - flood-volume:/data/server
     environment:
       - RTORRENT_VER=${RTORRENT_VER:-0.9.7}
       - LIBTORRENT_VER=${LIBTORRENT_VER:-0.13.7}
