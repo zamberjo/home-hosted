@@ -66,11 +66,11 @@ services:
 volumes:
   rtorrent-session-volume: {}
   rtorrent-watch-volume: {}
+  flood-volume: {}
   rtorrent-incoming-volume:
     external: true
   rtorrent-downloads-volume:
     external: true
-  flood-volume: {}
 
 networks:
   rtorrent-network:
