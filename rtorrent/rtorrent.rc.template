@@ -32,7 +32,7 @@ network.port_random.set = ${RT_PORT_RANDOM}
 
 ## Tracker-less torrent and UDP tracker support
 dht.mode.set = ${RT_DHT}
-# dht.port.set = ${RT_DHT_PORT}
+dht.port.set = ${RT_DHT_PORT}
 protocol.pex.set = ${RT_PEER_EXCHANGE}
 
 
@@ -153,16 +153,16 @@ method.insert = d.move_to_complete, simple, "execute=mkdir,-p,$argument.1=; exec
 method.set_key = event.download.finished,move_complete,"d.move_to_complete=$d.get_data_full_path=,$d.get_finished_dir="
 
 
-# ## Ratio Handling
-# ## Enable the default ratio group.
-# ratio.${RT_RATIO}=
-# ## Change the limits, the defaults should be sufficient.
-# ratio.min.set = ${RT_RATIO_MIN}
-# ratio.max.set = ${RT_RATIO_MAX}
-# ratio.upload.set = ${RT_RATIO_UPLOAD}
-# ## Changing the command triggered when the ratio is reached.
-# ## (the default is "d.try_close= ; d.ignore_commands.set=1")
-# method.set = group.seeding.ratio.command, "d.close= ; d.erase="
+## Ratio Handling
+## Enable the default ratio group.
+ratio.${RT_RATIO}=
+## Change the limits, the defaults should be sufficient.
+ratio.min.set = ${RT_RATIO_MIN}
+ratio.max.set = ${RT_RATIO_MAX}
+ratio.upload.set = ${RT_RATIO_UPLOAD}
+## Changing the command triggered when the ratio is reached.
+## (the default is "d.try_close= ; d.ignore_commands.set=1")
+method.set = group.seeding.ratio.command, "d.close= ; d.erase="
 
 
 ###############################################################################

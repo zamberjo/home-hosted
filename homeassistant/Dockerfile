@@ -9,6 +9,8 @@ RUN apk add --no-cache \
 	git \
 	python3 \
 	ca-certificates \
+  net-tools \
+  nmap \
   && addgroup -g ${GUID} hass \
   && adduser -h /config -D -G hass -s /bin/sh -u ${UID} hass \
   &&  pip3 install --upgrade --no-cache-dir pip \

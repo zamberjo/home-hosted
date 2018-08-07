@@ -17,7 +17,7 @@ services:
       # - RT_PORT_RANDOM=${RT_PORT_RANDOM:-no}
       # - RT_DHT_PORT=${RTORRENT_DHT_PORT:-6881}
     volumes:
-      - rtorrent-incoming-volume:/data/incoming
+      - rtorrent-incoming-volume:/data/incoming:z
       - rtorrent-session-volume:/data/session
       - rtorrent-downloads-volume:/data/downloads:z
       - rtorrent-watch-volume:/data/watch
@@ -37,7 +37,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - flood-volume:/data
+      - rtorrent-incoming-volume:/data/incoming:z
+      - rtorrent-downloads-volume:/data/downloads:z
     environment:
       - RTORRENT_VER=${RTORRENT_VER:-0.9.7}
       - LIBTORRENT_VER=${LIBTORRENT_VER:-0.13.7}
