@@ -11,7 +11,13 @@ services:
       - TZ="Europe/Madrid"
     volumes:
       - homeassistant-config-volume:/config
-      # - /etc/localtime:/etc/localtime:ro
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=8123'
+      - 'traefik.frontend.rule=Host:homeassistant.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+      - 'traefik.docker.network=proxy-network'
     healthcheck:
       test: nc -z 127.0.0.1 8123
       interval: 5s
@@ -20,4 +26,8 @@ services:
 
 volumes:
   homeassistant-config-volume:
+    external: true
+
+networks:
+  proxy-network:
     external: true

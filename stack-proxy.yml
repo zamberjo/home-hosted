@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   traefik:
-    image: traefik:v1.6.5
+    image: traefik:v1.7.4
     restart: unless-stopped
     environment:
       - CLOUDFLARE_EMAIL=${TRAEFIK_CLOUDFLARE_EMAIL}
@@ -10,20 +10,21 @@ services:
     ports:
       - '80:80'
       - '443:443'
-      - '8080:8080'
+      - '8443:8443'
+      - '127.0.0.1:8080:8080'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - traefik-volume:/etc/traefik/acme
     command:
       - --checkNewVersion=false
       - --api
-      - --api.entrypoint=panel
+      # - --api.entrypoint=panel
       - --api.dashboard
       - --docker
       - --docker.watch
       - --docker.exposedbydefault=false
       - --defaultEntryPoints=http,https
-      - --entryPoints=Name:panel Address::8080
+      # - --entryPoints=Name:panel Address::8080
       - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
       - --entryPoints=Name:https Address::443 TLS
       - --logLevel=INFO
@@ -40,14 +41,14 @@ services:
       - --acme.domains=*.${DOMAIN}
       - --acme.domains=${DOMAIN}
       - --acme.caServer=https://acme-v02.api.letsencrypt.org/directory
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.port=8080'
-      - 'traefik.frontend.entryPoints=panel'
-      - 'traefik.frontend.rule=Host:traefik.${DOMAIN}'
-      - 'traefik.frontend.passHostHeader=true'
-      - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
-      - 'traefik.docker.network=proxy-network'
+    # labels:
+    #   - 'traefik.enable=true'
+    #   - 'traefik.port=8080'
+    #   - 'traefik.frontend.entryPoints=panel'
+    #   - 'traefik.frontend.rule=Host:traefik.${DOMAIN}'
+    #   - 'traefik.frontend.passHostHeader=true'
+    #   - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+    #   - 'traefik.docker.network=proxy-network'
     networks:
       - proxy-network
     logging:
