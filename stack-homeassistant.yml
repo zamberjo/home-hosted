@@ -18,6 +18,8 @@ services:
       - 'traefik.frontend.passHostHeader=true'
       # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
       - 'traefik.docker.network=proxy-network'
+    networks:
+      - proxy-network
     healthcheck:
       test: nc -z 127.0.0.1 8123
       interval: 5s
