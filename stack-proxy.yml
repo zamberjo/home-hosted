@@ -18,13 +18,13 @@ services:
     command:
       - --checkNewVersion=false
       - --api
-      # - --api.entrypoint=panel
+      - --api.entrypoint=panel
       - --api.dashboard
       - --docker
       - --docker.watch
       - --docker.exposedbydefault=false
       - --defaultEntryPoints=http,https
-      # - --entryPoints=Name:panel Address::8080
+      - --entryPoints=Name:panel Address::8080
       - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
       - --entryPoints=Name:https Address::443 TLS
       - --logLevel=INFO
