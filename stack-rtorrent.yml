@@ -50,7 +50,7 @@ services:
       - 'traefik.port=3000'
       - 'traefik.frontend.rule=Host:flood.${DOMAIN}'
       - 'traefik.frontend.passHostHeader=true'
-      - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+      # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
       - 'traefik.docker.network=proxy-network'
     networks:
       - rtorrent-network

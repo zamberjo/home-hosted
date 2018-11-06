@@ -16,7 +16,7 @@ services:
       - 'traefik.port=8123'
       - 'traefik.frontend.rule=Host:homeassistant.${DOMAIN}'
       - 'traefik.frontend.passHostHeader=true'
-      - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+      # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
       - 'traefik.docker.network=proxy-network'
     healthcheck:
       test: nc -z 127.0.0.1 8123
