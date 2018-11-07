@@ -2,4 +2,9 @@ version: '2.1'
 
 services:
   homeassistant:
-    image: homeassistant/raspberrypi3-homeassistant
+    image: homeassistant/raspberrypi3-homeassistant:0.81.6
+    privileged: true
+    environment:
+      - TZ="Europe/Madrid"
+      - UID=1000
+      - GUID=1000
