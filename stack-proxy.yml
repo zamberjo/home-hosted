@@ -9,9 +9,8 @@ services:
       - CLOUDFLARE_API_KEY=${TRAEFIK_CLOUDFLARE_API_KEY}
     ports:
       - '80:80'
-      - '443:443'
-      - '8443:443'
-      - '127.0.0.1:8080:8080'
+      - '8443:8443'
+      - '8080:8080'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - traefik-volume:/etc/traefik/acme
@@ -26,7 +25,7 @@ services:
       - --defaultEntryPoints=http,https
       - --entryPoints=Name:panel Address::8080
       - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
-      - --entryPoints=Name:https Address::443 TLS
+      - --entryPoints=Name:https Address::8443 TLS
       - --logLevel=INFO
       - --accessLog
       - --accessLog.filters.statusCodes=200,204,300-302,401,403,500
