@@ -1,0 +1,10 @@
+version: '2.3'
+
+services:
+  prometheus:
+    image: prometheus_prometheus
+    build:
+      context: ./prometheus
+      args:
+        TAG: 2.7.1-armhf
+        IMAGE: rycus86/prometheus

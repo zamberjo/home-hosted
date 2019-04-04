@@ -6,10 +6,13 @@ services:
     build:
       context: ./prometheus
       args:
-        TAG: v2.8.1
+        TAG: v2.7.1
+        IMAGE: prom/prometheus
     restart: unless-stopped
     volumes:
       - prometheus-volume:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      # - ./prometheus/rules.yml:/etc/prometheus/rules.yml
     ports:
       - 9090:9090
     command:
