@@ -32,6 +32,7 @@ docker network create proxy-network
 
 ## Prometheus
 - `docker-compose -f stack-prometheus.yml -p prometheus up -d`
+- *RPI*: `docker-compose -f stack-prometheus.yml -f stack-prometheus.armhf.yml -p prometheus up -d`
 
 ## Grafana
 - `docker-compose -f stack-grafana.yml -p grafana up -d`
