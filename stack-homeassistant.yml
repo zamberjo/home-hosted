@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   homeassistant:
-    image: homeassistant/home-assistant:0.83.3
+    image: homeassistant/home-assistant:0.91.0
     restart: unless-stopped
     # network_mode: "host"
     ports:

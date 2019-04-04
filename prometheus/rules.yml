@@ -1,0 +1,12 @@
+groups:
+- name: CPU
+  rules:
+    - record: instance:node_cpu_utilization_percent:rate5m
+      expr: 100 * (1 - avg by(instance)(irate(node_cpu{mode='idle'}[5m])))
+    - alert: HighErrorRate
+      expr: job:request_latency_seconds:mean5m{job="myjob"} > 0.5
+      for: 10m
+      labels:
+        severity: page
+      annotations:
+        summary: High request latency

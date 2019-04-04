@@ -1,0 +1,27 @@
+version: '2.3'
+
+services:
+  grafana:
+    image: grafana/grafana:6.1.0
+    restart: unless-stopped
+    volumes:
+      - grafana-volume:/var/lib/grafana
+    ports:
+      - 3000:3000
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=3000'
+      - 'traefik.frontend.rule=Host:grafana.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
+    networks:
+      - proxy-network
+
+volumes:
+  grafana-volume: {}
+
+networks:
+  proxy-network:
+    external: true

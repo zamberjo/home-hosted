@@ -1,0 +1,34 @@
+version: '2.3'
+
+services:
+  prometheus:
+    image: prometheus_prometheus
+    build:
+      context: ./prometheus
+      args:
+        TAG: v2.8.1
+    restart: unless-stopped
+    volumes:
+      - prometheus-volume:/prometheus
+    ports:
+      - 9090:9090
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=9090'
+      - 'traefik.frontend.rule=Host:prometheus.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
+    networks:
+      - proxy-network
+
+volumes:
+  prometheus-volume: {}
+
+networks:
+  proxy-network:
+    external: true

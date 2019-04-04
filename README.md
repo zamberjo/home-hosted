@@ -29,3 +29,9 @@ docker network create proxy-network
 - `docker-compose -f stack-homeassistant.yml -p homeassistant up -d`
 - *RPI*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.armhf.yml -p homeassistant up -d`
 - *DEVEL*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.devel.yml -p homeassistant up -d`
+
+## Prometheus
+- `docker-compose -f stack-prometheus.yml -p prometheus up -d`
+
+## Grafana
+- `docker-compose -f stack-grafana.yml -p grafana up -d`
