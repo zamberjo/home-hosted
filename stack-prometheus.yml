@@ -28,6 +28,27 @@ services:
       - 'traefik.docker.network=proxy-network'
     networks:
       - proxy-network
+    depends_on:
+      - cadvisor
+
+  cadvisor:
+    image: google/cadvisor:v0.33.0
+    container_name: cadvisor
+    ports:
+      - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:5.0-stretch
+    container_name: redis
+    ports:
+      - 6379:6379
 
 volumes:
   prometheus-volume: {}
