@@ -20,12 +20,12 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.port=9090'
-      - 'traefik.frontend.rule=Host:prometheus.${DOMAIN}'
-      - 'traefik.frontend.passHostHeader=true'
-      - 'traefik.docker.network=proxy-network'
+    # labels:
+    #   - 'traefik.enable=true'
+    #   - 'traefik.port=9090'
+    #   - 'traefik.frontend.rule=Host:prometheus.${DOMAIN}'
+    #   - 'traefik.frontend.passHostHeader=true'
+    #   - 'traefik.docker.network=proxy-network'
     networks:
       - proxy-network
     depends_on:
