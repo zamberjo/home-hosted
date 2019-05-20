@@ -21,7 +21,8 @@ RUN apk -U upgrade \
     && npm run build \
     && rm -rf /var/cache/apk/* /tmp/* \
     && apk del --force \
-        .build-deps
+        .build-deps \
+    && apk add mediainfo
 
 # Create app working directory.
 WORKDIR /usr/src/app
