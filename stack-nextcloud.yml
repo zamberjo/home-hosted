@@ -42,24 +42,6 @@ services:
     #   options:
     #     tag: 'nextcloud'
 
-  cron:
-    image: nextcloud_nextcloud
-    restart: unless-stopped
-    environment:
-      - POSTGRES_DB=nextcloud
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST=postgres
-    volumes:
-      - nextcloud-volume:/var/www/html
-      - nextcloud-apps-volume:/var/www/html/custom_apps
-      - nextcloud-config-volume:/var/www/html/config
-      - nextcloud-data-volume:/var/www/html/data
-    entrypoint: /cron.sh
-    networks:
-      - postgres-network
-      - redis-network
-
 volumes:
   nextcloud-volume: {}
   nextcloud-apps-volume: {}
