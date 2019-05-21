@@ -1,0 +1,20 @@
+version: '2.3'
+
+services:
+  redis:
+    image: redis:4.0-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-volume:/data
+    networks:
+      - redis-network
+
+volumes:
+  redis-volume:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+
+networks:
+  redis-network:
+    external: true

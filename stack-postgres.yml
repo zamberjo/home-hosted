@@ -1,0 +1,26 @@
+version: '2.3'
+
+services:
+  postgres:
+    image: postgres:10.5-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+    healthcheck:
+      test: pg_isready -U postgres || exit 1
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  postgres-volume: {}
+
+networks:
+  postgres-network:
+    external: true

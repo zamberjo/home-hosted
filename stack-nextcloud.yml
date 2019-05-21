@@ -1,0 +1,75 @@
+version: '2.3'
+
+services:
+  # TODO nextcloud -> app
+  nextcloud:
+    image: nextcloud_nextcloud
+    build:
+      context: ./nextcloud
+      args:
+        TAG: 15.0.5-apache
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=postgres
+    volumes:
+      - nextcloud-volume:/var/www/html
+      - nextcloud-apps-volume:/var/www/html/custom_apps
+      - nextcloud-config-volume:/var/www/html/config
+      - nextcloud-data-volume:/var/www/html/data
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:nextcloud.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
+      # - 'traefik.frontend.headers.forceSTSHeader=true'
+      # - 'traefik.frontend.headers.STSSeconds=315360000'
+      # - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+      - 'traefik.frontend.headers.STSPreload=true'
+      - 'traefik.frontend.headers.STSSeconds=31536000'
+      - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+      - 'traefik.frontend.headers.forceSTSHeader=true'
+      - 'traefik.frontend.headers.referrerPolicy=no-referrer'
+    networks:
+      - postgres-network
+      - proxy-network
+      - redis-network
+    # logging:
+    #   driver: 'journald'
+    #   options:
+    #     tag: 'nextcloud'
+
+  cron:
+    image: nextcloud_nextcloud
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=postgres
+    volumes:
+      - nextcloud-volume:/var/www/html
+      - nextcloud-apps-volume:/var/www/html/custom_apps
+      - nextcloud-config-volume:/var/www/html/config
+      - nextcloud-data-volume:/var/www/html/data
+    entrypoint: /cron.sh
+    networks:
+      - postgres-network
+      - redis-network
+
+volumes:
+  nextcloud-volume: {}
+  nextcloud-apps-volume: {}
+  nextcloud-config-volume: {}
+  nextcloud-data-volume: {}
+
+networks:
+  postgres-network:
+    external: true
+  proxy-network:
+    external: true
+  redis-network:
+    external: true

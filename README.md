@@ -1,7 +1,15 @@
 ## Setup Networking
 ```
 docker network create proxy-network
+docker network create postgres-network
+docker network create redis-network
 ```
+
+## Deploy PostgreSQL
+- `docker-compose -f stack-postgres.yml -p postgres up -d`
+
+## Deploy Redis
+- `docker-compose -f stack-redis.yml -p redis up -d`
 
 ## Deploy Traefik
 - `docker-compose -f stack-proxy.yml -p proxy up -d`
@@ -37,3 +45,6 @@ docker network create proxy-network
 
 ## Grafana
 - `docker-compose -f stack-grafana.yml -p grafana up -d`
+
+## Deploy NextCloud
+- `docker-compose -f stack-nextcloud.yml -p nextcloud up -d`
