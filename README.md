@@ -48,3 +48,4 @@ docker network create redis-network
 
 ## Deploy NextCloud
 - `docker-compose -f stack-nextcloud.yml -p nextcloud up -d`
+- `docker-compose -f stack-nextcloud-cron.yml -p nextcloud_cron up -d`
