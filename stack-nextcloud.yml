@@ -7,13 +7,18 @@ services:
     build:
       context: ./nextcloud
       args:
-        TAG: 15.0.5-apache
+        TAG: 16.0.1-apache
     restart: unless-stopped
     environment:
       - POSTGRES_DB=nextcloud
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - NEXTCLOUD_URL=${NEXTCLOUD_URL}
+      - NEXTCLOUD_CLI_URL=${NEXTCLOUD_CLI_URL}
+      - NEXTCLOUD_PROTOCOL=${NEXTCLOUD_PROTOCOL}
     volumes:
       - nextcloud-volume:/var/www/html
       - nextcloud-apps-volume:/var/www/html/custom_apps
@@ -25,14 +30,6 @@ services:
       - 'traefik.frontend.rule=Host:nextcloud.${DOMAIN}'
       - 'traefik.frontend.passHostHeader=true'
       - 'traefik.docker.network=proxy-network'
-      # - 'traefik.frontend.headers.forceSTSHeader=true'
-      # - 'traefik.frontend.headers.STSSeconds=315360000'
-      # - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-      - 'traefik.frontend.headers.STSPreload=true'
-      - 'traefik.frontend.headers.STSSeconds=31536000'
-      - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-      - 'traefik.frontend.headers.forceSTSHeader=true'
-      - 'traefik.frontend.headers.referrerPolicy=no-referrer'
     networks:
       - postgres-network
       - proxy-network
