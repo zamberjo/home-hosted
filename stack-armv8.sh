@@ -1,8 +1,4 @@
-#!/bin/sh
-
-docker inspect proxy-network &> /dev/null || docker network create proxy-network
-docker inspect postgres-network &> /dev/null || docker network create postgres-network
-docker inspect redis-network &> /dev/null || docker network create redis-network
+#!/bin/bash
 
 ARG_PG=0
 ARG_REDIS=0
@@ -14,6 +10,7 @@ ARG_PROMETHEUS=0
 ARG_GRAFANA=0
 ARG_NEXTCLOUD=0
 ARG_ALL=0
+PRINT_HELP=1
 
 print_help () {
     >&2 cat <<EOF
@@ -43,33 +40,46 @@ while [[ ${#} -gt 0 ]]; do
     case "${1}" in
         --pg)
             ARG_PG=1
+            PRINT_HELP=0
             ;;
         --redis)
             ARG_REDIS=1
+            PRINT_HELP=0
             ;;
         --traefik)
             ARG_TRAEFIK=1
+            PRINT_HELP=0
             ;;
         --rtorrent)
             ARG_RTORRENT=1
+            PRINT_HELP=0
             ;;
         --plex)
             ARG_PLEX=1
+            PRINT_HELP=0
             ;;
         --hass)
             ARG_HASS=1
+            PRINT_HELP=0
             ;;
         --prometheus)
             ARG_PROMETHEUS=1
+            PRINT_HELP=0
             ;;
         --grafana)
             ARG_GRAFANA=1
+            PRINT_HELP=0
             ;;
         --nextcloud)
             ARG_NEXTCLOUD=1
+            PRINT_HELP=0
             ;;
         --all)
             ARG_ALL=1
+            PRINT_HELP=0
+            ;;
+        --help)
+            print_help
             ;;
         *)
             >&2 echo "[ERROR] unknown arg: ${1}"
@@ -79,28 +89,33 @@ while [[ ${#} -gt 0 ]]; do
     shift
 done
 
-if [[ ${ARG_PG} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+[[ ${PRINT_HELP} -eq 1 ]] && print_help
+
+if [[ ${ARG_PG} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
+    docker inspect postgres-network &> /dev/null || docker network create postgres-network;
     docker-compose \
         -f stack-postgres.yml \
         -p postgres \
         up -d --build --force-recreate
 fi
 
-if [[ ${ARG_REDIS} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+if [[ ${ARG_REDIS} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
+    docker inspect redis-network &> /dev/null || docker network create redis-network;
     docker-compose \
         -f stack-redis.yml \
         -p redis \
         up -d --build --force-recreate
 fi
 
-if [[ ${ARG_TRAEFIK} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+if [[ ${ARG_TRAEFIK} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
+    docker inspect proxy-network &> /dev/null || docker network create proxy-network;
     docker-compose \
         -f stack-proxy.yml \
         -p proxy \
         up -d --build --force-recreate
 fi
 
-if [[ ${ARG_RTORRENT} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+if [[ ${ARG_RTORRENT} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
     docker inspect rtorrent-incoming-volume &> /dev/null
     if [[ $? -eq 1 ]]; then
         >&2 echo "[ERROR] Before build, you must create rtorrent-incoming-volume volume!"
@@ -138,7 +153,7 @@ if [[ ${ARG_RTORRENT} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
         up -d --build --force-recreate
 fi
 
-if [[ ${ARG_PLEX} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+if [[ ${ARG_PLEX} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
     docker inspect plex-config-volume &> /dev/null
     if [[ $? -eq 1 ]]; then
         >&2 echo "[ERROR] Before build, you must create plex-config-volume volume!"
@@ -151,7 +166,7 @@ if [[ ${ARG_PLEX} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
         up -d --build --force-recreate
 fi
 
-if [[ ${ARG_HASS} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+if [[ ${ARG_HASS} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
     docker inspect homeassistant-config-volume &> /dev/null
     if [[ $? -eq 1 ]]; then
         >&2 echo "[ERROR] Before build, you must create homeassistant-config-volume volume!"
@@ -164,7 +179,7 @@ if [[ ${ARG_HASS} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
         up -d --build --force-recreate
 fi
 
-if [[ ${ARG_PROMETHEUS} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+if [[ ${ARG_PROMETHEUS} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
     docker-compose \
         -f stack-prometheus.yml \
         -f stack-prometheus.armv8.yml \
@@ -172,14 +187,14 @@ if [[ ${ARG_PROMETHEUS} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
         up -d --build --force-recreate
 fi
 
-if [[ ${ARG_GRAFANA} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+if [[ ${ARG_GRAFANA} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
     docker-compose \
         -f stack-grafana.yml \
         -p grafana \
         up -d --build --force-recreate
 fi
 
-if [[ ${ARG_NEXTCLOUD} -eq 1 ]] || [[ ${ARG_ALL} -eq 1 ]]; then
+if [[ ${ARG_NEXTCLOUD} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
     docker-compose \
         -f stack-nextcloud.yml \
         -p nextcloud \

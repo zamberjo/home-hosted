@@ -32,6 +32,10 @@ docker network create redis-network
 - *ARM*: `docker-compose -f stack-rtorrent.yml -f stack-rtorrent.armv8.yml -p rtorrent up -d`
 - *DEVEL*: `docker-compose -f stack-rtorrent.yml -f stack-rtorrent.devel.yml -p rtorrent up -d`
 - *USE*: `tvshows` and `movies` tags
+- *FRONTENDS*:
+  - https://flood.${DOMAIN}
+  - https://couchpotato.${DOMAIN}
+  - localhost:9117/UI/Dashboard
 
 
 ## Deploy Plex
@@ -40,6 +44,8 @@ docker network create redis-network
 - `docker-compose -f stack-plex.yml -p plex up -d`
 - *ARM*: `docker-compose -f stack-plex.yml -f stack-plex.armv8.yml -p plex up -d`
 - *DEVEL*: `docker-compose -f stack-plex.yml -f stack-plex.devel.yml -p plex up -d`
+- *FRONTEND*:
+  - https://plex.${DOMAIN}
 
 
 ## Deploy HomeAssistant
@@ -48,17 +54,25 @@ docker network create redis-network
 - `docker-compose -f stack-homeassistant.yml -p homeassistant up -d`
 - *ARM*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.armv8.yml -p homeassistant up -d`
 - *DEVEL*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.devel.yml -p homeassistant up -d`
+- *FRONTEND*:
+  - https://homeassistant.${DOMAIN}
 
 
 ## Prometheus
 - `docker-compose -f stack-prometheus.yml -p prometheus up -d`
 - *ARM*: `docker-compose -f stack-prometheus.yml -f stack-prometheus.armv8.yml -p prometheus up -d`
+- *FRONTEND*:
+  - localhost:9090
 
 
 ## Grafana
 - `docker-compose -f stack-grafana.yml -p grafana up -d`
+- *FRONTEND*:
+  - https://grafana.${DOMAIN}
 
 
 ## Deploy NextCloud
 - `docker-compose -f stack-nextcloud.yml -p nextcloud up -d`
 - `docker-compose -f stack-nextcloud-cron.yml -p nextcloud_cron up -d`
+- *FRONTEND*:
+  - https://nextcloud.${DOMAIN}
