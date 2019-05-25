@@ -46,7 +46,7 @@ WORKDIR /data
 VOLUME /data/incoming
 VOLUME /data/session
 VOLUME /data/downloads
-# VOLUME /data/watch
+VOLUME /data/watch
 
 EXPOSE 5000 ${RT_PORT_RANGE} ${RT_DHT_PORT}/udp
 

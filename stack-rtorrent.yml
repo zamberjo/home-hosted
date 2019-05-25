@@ -63,14 +63,69 @@ services:
       timeout: 30s
       retries: 3
 
+  couchpotato:
+    # build:
+    #   context: ./couchpotato
+    image: linuxserver/couchpotato:arm64v8-latest
+    restart: unless-stopped
+    ports:
+      - "5050:5050"
+    environment:
+      - PUID=${RTORRENT_UID:-1000}
+      - PGID=${RTORRENT_UID:-1000}
+      - TZ=Europe/Madrid
+    networks:
+      - rtorrent-network
+      - proxy-network
+    volumes:
+      - rtorrent-watch-volume:/torrents
+      - couchpotato-volume:/config
+    depends_on:
+      - rtorrent
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=5050'
+      - 'traefik.frontend.rule=Host:couchpotato.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+      - 'traefik.docker.network=proxy-network'
+
+  jackett:
+    image: linuxserver/jackett
+    environment:
+      - PUID=${RTORRENT_UID:-1000}
+      - PGID=${RTORRENT_UID:-1000}
+      - TZ=Europe/Madrid
+    volumes:
+      - jackett-config-volume:/config
+      - jackett-blackhole-volume:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=9117'
+      - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+      - 'traefik.docker.network=proxy-network'
+
+
 volumes:
   rtorrent-session-volume: {}
-  rtorrent-watch-volume: {}
+  rtorrent-watch-volume:
+    external: True
   flood-volume: {}
   rtorrent-incoming-volume:
     external: true
   rtorrent-downloads-volume:
     external: true
+  couchpotato-volume:
+    external: True
+  jackett-config-volume:
+    external: True
+  jackett-blackhole-volume:
+    external: True
 
 networks:
   rtorrent-network:
