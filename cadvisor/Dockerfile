@@ -1,5 +1,5 @@
 # Builder
-FROM arm32v7/golang as builder
+FROM arm64v8/golang as builder
 
 ARG VERSION=${VERSION}
 # ENV VERSION "${VERSION}"
@@ -13,7 +13,7 @@ WORKDIR /go/src/github.com/google/cadvisor
 RUN make build
 
 # Image for usage
-FROM arm32v7/debian
+FROM arm64v8/debian
 
 COPY --from=builder /go/src/github.com/google/cadvisor/cadvisor /usr/bin/cadvisor
 
