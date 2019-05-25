@@ -41,18 +41,14 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-    depends_on:
-      - redis
-
-  redis:
-    image: redis:5.0-stretch
-    container_name: redis
-    ports:
-      - 6379:6379
+    networks:
+      - redis-network
 
 volumes:
   prometheus-volume: {}
 
 networks:
   proxy-network:
+    external: true
+  redis-network:
     external: true

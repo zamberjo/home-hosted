@@ -4,4 +4,7 @@ services:
   flood:
     build:
       args:
-        ARCH: arm32v6
+        ARCH: arm64v8
+
+  jackett:
+    image: linuxserver/jackett:arm64v8-v0.11.375-ls24

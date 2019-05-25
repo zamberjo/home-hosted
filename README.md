@@ -25,7 +25,7 @@ docker network create redis-network
 - `docker volume create --name jackett-blackhole-volume -d local -o o=bind -o type=none -o device=$HOME/jackett/blackhole`
 - `docker volume create --name jackett-config-volume -d local -o o=bind -o type=none -o device=$HOME/jackett/config`
 - `docker-compose -f stack-rtorrent.yml -p rtorrent up -d`
-- *RPI*: `docker-compose -f stack-rtorrent.yml -f stack-rtorrent.armhf.yml -p rtorrent up -d`
+- *ARM*: `docker-compose -f stack-rtorrent.yml -f stack-rtorrent.armhf.yml -p rtorrent up -d`
 - *DEVEL*: `docker-compose -f stack-rtorrent.yml -f stack-rtorrent.devel.yml -p rtorrent up -d`
 - *USE*: `tvshows` and `movies` tags
 
@@ -33,19 +33,19 @@ docker network create redis-network
 - `mkdir -pv $HOME/plex/config`
 - `docker volume create --name plex-config-volume -d local -o o=bind -o type=none -o device=$HOME/plex/config`
 - `docker-compose -f stack-plex.yml -p plex up -d`
-- *RPI*: `docker-compose -f stack-plex.yml -f stack-plex.armhf.yml -p plex up -d`
+- *ARM*: `docker-compose -f stack-plex.yml -f stack-plex.armhf.yml -p plex up -d`
 - *DEVEL*: `docker-compose -f stack-plex.yml -f stack-plex.devel.yml -p plex up -d`
 
 ## Deploy HomeAssistant
 - `mkdir -pv $HOME/homeassistant-config`
 - `docker volume create --name homeassistant-config-volume -d local -o o=bind -o type=none -o device=$HOME/homeassistant-config`
 - `docker-compose -f stack-homeassistant.yml -p homeassistant up -d`
-- *RPI*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.armhf.yml -p homeassistant up -d`
+- *ARM*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.armhf.yml -p homeassistant up -d`
 - *DEVEL*: `docker-compose -f stack-homeassistant.yml -f stack-homeassistant.devel.yml -p homeassistant up -d`
 
 ## Prometheus
 - `docker-compose -f stack-prometheus.yml -p prometheus up -d`
-- *RPI*: `docker-compose -f stack-prometheus.yml -f stack-prometheus.armhf.yml -p prometheus up -d`
+- *ARM*: `docker-compose -f stack-prometheus.yml -f stack-prometheus.armhf.yml -p prometheus up -d`
 
 ## Grafana
 - `docker-compose -f stack-grafana.yml -p grafana up -d`
