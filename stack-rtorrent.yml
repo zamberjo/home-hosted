@@ -82,6 +82,7 @@ services:
       - couchpotato-volume:/config
     depends_on:
       - rtorrent
+      - jackett
     labels:
       - 'traefik.enable=true'
       - 'traefik.port=5050'
@@ -102,14 +103,8 @@ services:
     ports:
       - 9117:9117
     restart: unless-stopped
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.port=9117'
-      - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
-      - 'traefik.frontend.passHostHeader=true'
-      # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
-      - 'traefik.docker.network=proxy-network'
-
+    depends_on:
+      - rtorrent
 
 volumes:
   rtorrent-session-volume: {}
