@@ -7,4 +7,10 @@ services:
         ARCH: arm64v8
 
   jackett:
-    image: linuxserver/jackett:arm64v8-v0.11.375-ls24
+    image: linuxserver/jackett:arm64v8-latest
+
+  sonarr:
+    image: linuxserver/sonarr:arm64v8-latest
+
+  couchpotato:
+    image: linuxserver/couchpotato:arm64v8-latest

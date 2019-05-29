@@ -64,7 +64,7 @@ services:
       retries: 3
 
   couchpotato:
-    image: linuxserver/couchpotato:arm64v8-latest
+    image: linuxserver/couchpotato
     restart: unless-stopped
     ports:
       - "5050:5050"
@@ -91,7 +91,7 @@ services:
       - 'traefik.docker.network=proxy-network'
 
   sonarr:
-    image: linuxserver/sonarr:arm64v8-latest
+    image: linuxserver/sonarr
     restart: unless-stopped
     ports:
       - "8989:8989"
@@ -104,7 +104,8 @@ services:
       - proxy-network
       - jackett-network
     volumes:
-      - rtorrent-watch-volume:/downloads
+      - rtorrent-watch-volume:/watch
+      - rtorrent-downloads-volume:/downloads
       - sonarr-volume:/config
     depends_on:
       - rtorrent
@@ -133,13 +134,13 @@ services:
     restart: unless-stopped
     depends_on:
       - rtorrent
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.port=9117'
-      - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
-      - 'traefik.frontend.passHostHeader=true'
-      # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
-      - 'traefik.docker.network=proxy-network'
+    # labels:
+    #   - 'traefik.enable=true'
+    #   - 'traefik.port=9117'
+    #   - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
+    #   - 'traefik.frontend.passHostHeader=true'
+    #   # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+    #   - 'traefik.docker.network=proxy-network'
 
 volumes:
   rtorrent-session-volume: {}
