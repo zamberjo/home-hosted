@@ -133,6 +133,13 @@ services:
     restart: unless-stopped
     depends_on:
       - rtorrent
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=9117'
+      - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
+      - 'traefik.docker.network=proxy-network'
 
 volumes:
   rtorrent-session-volume: {}
