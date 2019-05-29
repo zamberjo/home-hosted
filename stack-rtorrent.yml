@@ -113,7 +113,7 @@ services:
       - jackett
     labels:
       - 'traefik.enable=true'
-      - 'traefik.port=8989'
+      - 'traefik.port=7878'
       - 'traefik.frontend.rule=Host:radarr.${DOMAIN}'
       - 'traefik.frontend.passHostHeader=true'
       - 'traefik.docker.network=proxy-network'
@@ -166,7 +166,6 @@ services:
     #   - 'traefik.port=9117'
     #   - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
     #   - 'traefik.frontend.passHostHeader=true'
-    #   # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
     #   - 'traefik.docker.network=proxy-network'
 
 volumes:
