@@ -12,5 +12,8 @@ services:
   sonarr:
     image: linuxserver/sonarr:arm64v8-latest
 
-  couchpotato:
-    image: linuxserver/couchpotato:arm64v8-latest
+  # couchpotato:
+  #   image: linuxserver/couchpotato:arm64v8-latest
+
+  radarr:
+    image: linuxserver/radarr:arm64v8-latest

@@ -19,13 +19,13 @@ docker network create redis-network
 - *DEVEL*: `docker-compose -f stack-proxy.yml -f stack-proxy.devel.yml -p proxy up -d`
 
 
-## Deploy rTorrent + Flood + couchpotato + jackett
-- `mkdir -pv $HOME/{downloads,watch,incoming,couchpotato,sonarr}`
+## Deploy rTorrent + Flood + radarr + sonarr + jackett
+- `mkdir -pv $HOME/{downloads,watch,incoming,radarr,sonarr}`
 - `mkdir -pv $HOME/jackett/{config,blackhole}`
 - `docker volume create --name rtorrent-incoming-volume -d local -o o=bind -o type=none -o device=$HOME/incoming`
 - `docker volume create --name rtorrent-downloads-volume -d local -o o=bind -o type=none -o device=$HOME/downloads`
 - `docker volume create --name rtorrent-watch-volume -d local -o o=bind -o type=none -o device=$HOME/watch`
-- `docker volume create --name couchpotato-volume -d local -o o=bind -o type=none -o device=$HOME/couchpotato`
+- `docker volume create --name radarr-volume -d local -o o=bind -o type=none -o device=$HOME/radarr`
 - `docker volume create --name sonarr-volume -d local -o o=bind -o type=none -o device=$HOME/sonarr`
 - `docker volume create --name jackett-blackhole-volume -d local -o o=bind -o type=none -o device=$HOME/jackett/blackhole`
 - `docker volume create --name jackett-config-volume -d local -o o=bind -o type=none -o device=$HOME/jackett/config`
