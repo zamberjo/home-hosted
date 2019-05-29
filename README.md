@@ -20,12 +20,13 @@ docker network create redis-network
 
 
 ## Deploy rTorrent + Flood + couchpotato + jackett
-- `mkdir -pv $HOME/{downloads,watch,incoming,couchpotato}`
+- `mkdir -pv $HOME/{downloads,watch,incoming,couchpotato,sonarr}`
 - `mkdir -pv $HOME/jackett/{config,blackhole}`
 - `docker volume create --name rtorrent-incoming-volume -d local -o o=bind -o type=none -o device=$HOME/incoming`
 - `docker volume create --name rtorrent-downloads-volume -d local -o o=bind -o type=none -o device=$HOME/downloads`
 - `docker volume create --name rtorrent-watch-volume -d local -o o=bind -o type=none -o device=$HOME/watch`
 - `docker volume create --name couchpotato-volume -d local -o o=bind -o type=none -o device=$HOME/couchpotato`
+- `docker volume create --name sonarr-volume -d local -o o=bind -o type=none -o device=$HOME/sonarr`
 - `docker volume create --name jackett-blackhole-volume -d local -o o=bind -o type=none -o device=$HOME/jackett/blackhole`
 - `docker volume create --name jackett-config-volume -d local -o o=bind -o type=none -o device=$HOME/jackett/config`
 - `docker-compose -f stack-rtorrent.yml -p rtorrent up -d`
