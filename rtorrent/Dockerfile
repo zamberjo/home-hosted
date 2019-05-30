@@ -3,8 +3,8 @@ FROM alpine:3.8
 ENV RT_UID=${RT_UID:-1000} \
     RT_GID=${RT_GID:-1000}
 
-RUN addgroup -g $RT_UID $RT_GID && \
-    adduser -S -u $UGID -G $RT_GID rtorrent && \
+RUN addgroup -g $RT_GID torrent && \
+    adduser -S -u $RT_UID -G torrent rtorrent && \
     apk add --no-cache rtorrent && \
     mkdir -p /data/config.d && \
     mkdir /data/session && \
