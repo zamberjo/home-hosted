@@ -6,16 +6,16 @@ ENV RT_UID=${RT_UID:-1000} \
 RUN addgroup -g $RT_GID rtorrent && \
     adduser -S -u $RT_UID -G rtorrent rtorrent && \
     apk add --no-cache rtorrent && \
-    mkdir -p /data/config.d && \
-    mkdir /data/session && \
-    mkdir /data/downloads && \
-    mkdir /data/watch && \
-    chown -R rtorrent:rtorrent /data
+    mkdir -p /home/rtorrent/rtorrent/config.d && \
+    mkdir /home/rtorrent/rtorrent/.session && \
+    mkdir /home/rtorrent/rtorrent/download && \
+    mkdir /home/rtorrent/rtorrent/watch && \
+    chown -R rtorrent:rtorrent /home/rtorrent/rtorrent
 
-COPY --chown=rtorrent:rtorrent config.d/ /data/config.d/
-COPY --chown=rtorrent:rtorrent .rtorrent.rc /data/.rtorrent.rc
+COPY --chown=rtorrent:rtorrent config.d/ /home/rtorrent/rtorrent/config.d/
+COPY --chown=rtorrent:rtorrent .rtorrent.rc /home/rtorrent/
 
-VOLUME /data/.session
+VOLUME /home/rtorrent/rtorrent/.session
 
 EXPOSE 16891
 EXPOSE 6881
