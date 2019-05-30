@@ -22,7 +22,7 @@ docker network create redis-network
 ## Deploy rTorrent + Flood + radarr + sonarr + jackett
 - `mkdir -pv $HOME/{downloads,watch,incoming,radarr,sonarr}`
 - `mkdir -pv $HOME/jackett/{config,blackhole}`
-- `docker volume create --name rtorrent-incoming-volume -d local -o o=bind -o type=none -o device=$HOME/incoming`
+- `# docker volume create --name rtorrent-incoming-volume -d local -o o=bind -o type=none -o device=$HOME/incoming`
 - `docker volume create --name rtorrent-downloads-volume -d local -o o=bind -o type=none -o device=$HOME/downloads`
 - `docker volume create --name rtorrent-watch-volume -d local -o o=bind -o type=none -o device=$HOME/watch`
 - `docker volume create --name radarr-volume -d local -o o=bind -o type=none -o device=$HOME/radarr`

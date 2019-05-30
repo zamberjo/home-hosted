@@ -7,8 +7,8 @@ services:
     image: rtorrent_rtorrent
     restart: unless-stopped
     ports:
-      - "5000:5000"
-      - "6890-6890:6890-6890"
+      - "50000:50000"
+      - "6881:6881"
       - "6881:6881/udp"
     environment:
       - RT_UID=${RTORRENT_UID:-1000}
@@ -24,7 +24,7 @@ services:
     networks:
       - rtorrent-network
     healthcheck:
-      test: nc -z 127.0.0.1 5000
+      test: nc -z 127.0.0.1 50000
       interval: 30s
       timeout: 30s
       retries: 3
@@ -63,33 +63,6 @@ services:
       timeout: 30s
       retries: 3
 
-  # couchpotato:
-  #   image: linuxserver/couchpotato
-  #   restart: unless-stopped
-  #   ports:
-  #     - "5050:5050"
-  #   environment:
-  #     - PUID=${RTORRENT_UID:-1000}
-  #     - PGID=${RTORRENT_UID:-1000}
-  #     - TZ=Europe/Madrid
-  #   networks:
-  #     - rtorrent-network
-  #     - proxy-network
-  #     - jackett-network
-  #   volumes:
-  #     - rtorrent-watch-volume:/torrents
-  #     - couchpotato-volume:/config
-  #   depends_on:
-  #     - rtorrent
-  #     - jackett
-  #   labels:
-  #     - 'traefik.enable=true'
-  #     - 'traefik.port=5050'
-  #     - 'traefik.frontend.rule=Host:couchpotato.${DOMAIN}'
-  #     - 'traefik.frontend.passHostHeader=true'
-  #     # - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
-  #     - 'traefik.docker.network=proxy-network'
-
   radarr:
     image: linuxserver/radarr
     restart: unless-stopped
@@ -107,7 +80,7 @@ services:
     networks:
       - rtorrent-network
       - proxy-network
-      - jackett-network
+      # - jackett-network
     depends_on:
       - rtorrent
       - jackett
@@ -130,7 +103,7 @@ services:
     networks:
       - rtorrent-network
       - proxy-network
-      - jackett-network
+      # - jackett-network
     volumes:
       - rtorrent-watch-volume:/watch
       - rtorrent-downloads-volume:/downloads
@@ -155,28 +128,28 @@ services:
       - jackett-config-volume:/config
       - jackett-blackhole-volume:/downloads
     networks:
-      - jackett-network
+      # - jackett-network
+      - proxy-network
     ports:
       - 9117:9117
     restart: unless-stopped
     depends_on:
       - rtorrent
-    # labels:
-    #   - 'traefik.enable=true'
-    #   - 'traefik.port=9117'
-    #   - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
-    #   - 'traefik.frontend.passHostHeader=true'
-    #   - 'traefik.docker.network=proxy-network'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=9117'
+      - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
 
 volumes:
   rtorrent-session-volume: {}
+  rtorrent-incoming-volume: {}
+  rtorrent-downloads-volume:
+    external: true
   flood-volume: {}
   rtorrent-watch-volume:
     external: True
-  rtorrent-incoming-volume:
-    external: true
-  rtorrent-downloads-volume:
-    external: true
   # couchpotato-volume:
   #   external: True
   radarr-volume:
@@ -190,6 +163,6 @@ volumes:
 
 networks:
   rtorrent-network: {}
-  jackett-network: {}
+  # jackett-network: {}
   proxy-network:
     external: true
