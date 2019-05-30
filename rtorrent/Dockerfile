@@ -13,7 +13,7 @@ RUN addgroup -g $RT_GID rtorrent && \
     chown -R rtorrent:rtorrent /data
 
 COPY --chown=rtorrent:rtorrent config.d/ /data/config.d/
-COPY --chown=rtorrent:rtorrent .rtorrent.rc /data/
+COPY --chown=rtorrent:rtorrent .rtorrent.rc /data/.rtorrent.rc
 
 VOLUME /data/.session
 
