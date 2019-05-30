@@ -6,11 +6,11 @@ services:
       args:
         ARCH: arm64v8
 
-  # jackett:
-  #   image: linuxserver/jackett:arm64v8-latest
+  jackett:
+    image: linuxserver/jackett:arm64v8-latest
 
   # sonarr:
   #   image: linuxserver/sonarr:arm64v8-latest
 
-  # radarr:
-  #   image: linuxserver/radarr:arm64v8-latest
+  radarr:
+    image: linuxserver/radarr:arm64v8-latest
