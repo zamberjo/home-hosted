@@ -131,11 +131,11 @@ if [[ ${ARG_RTORRENT} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
         >&2 echo "[ERROR] Before build, you must create rtorrent-watch-volume volume!"
         exit 1
     fi
-    docker inspect couchpotato-volume &> /dev/null
-    if [[ $? -eq 1 ]]; then
-        >&2 echo "[ERROR] Before build, you must create couchpotato-volume volume!"
-        exit 1
-    fi
+    # docker inspect couchpotato-volume &> /dev/null
+    # if [[ $? -eq 1 ]]; then
+    #     >&2 echo "[ERROR] Before build, you must create couchpotato-volume volume!"
+    #     exit 1
+    # fi
     docker inspect jackett-blackhole-volume &> /dev/null
     if [[ $? -eq 1 ]]; then
         >&2 echo "[ERROR] Before build, you must create jackett-blackhole-volume volume!"
