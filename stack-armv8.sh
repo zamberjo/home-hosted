@@ -116,11 +116,11 @@ if [[ ${ARG_TRAEFIK} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
 fi
 
 if [[ ${ARG_RTORRENT} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
-    docker inspect rtorrent-incoming-volume &> /dev/null
-    if [[ $? -eq 1 ]]; then
-        >&2 echo "[ERROR] Before build, you must create rtorrent-incoming-volume volume!"
-        exit 1
-    fi
+    # docker inspect rtorrent-incoming-volume &> /dev/null
+    # if [[ $? -eq 1 ]]; then
+    #     >&2 echo "[ERROR] Before build, you must create rtorrent-incoming-volume volume!"
+    #     exit 1
+    # fi
     docker inspect rtorrent-downloads-volume &> /dev/null
     if [[ $? -eq 1 ]]; then
         >&2 echo "[ERROR] Before build, you must create rtorrent-downloads-volume volume!"

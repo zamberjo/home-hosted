@@ -14,11 +14,7 @@ services:
     environment:
       - RT_UID=${RTORRENT_UID:-1000}
       - RT_GID=${RTORRENT_GID:-1000}
-      # - RT_LOG_LEVEL=${RTORRENT_LOG_LEVEL:-info}
-      # - RT_PORT_RANDOM=${RT_PORT_RANDOM:-no}
-      # - RT_DHT_PORT=${RTORRENT_DHT_PORT:-6881}
     volumes:
-      # - rtorrent-incoming-volume:/data/incoming
       - rtorrent-session-volume:/home/rtorrent/rtorrent/.session
       - rtorrent-downloads-volume:/home/rtorrent/rtorrent/download:z
       - rtorrent-watch-volume:/home/rtorrent/rtorrent/watch
@@ -145,14 +141,11 @@ services:
 
 volumes:
   rtorrent-session-volume: {}
-  # rtorrent-incoming-volume: {}
   rtorrent-downloads-volume:
     external: true
   flood-volume: {}
   rtorrent-watch-volume:
     external: True
-  # couchpotato-volume:
-  #   external: True
   radarr-volume:
     external: True
   sonarr-volume:
@@ -164,6 +157,5 @@ volumes:
 
 networks:
   rtorrent-network: {}
-  # jackett-network: {}
   proxy-network:
     external: true
