@@ -20,7 +20,7 @@ VOLUME /home/rtorrent/rtorrent/.session
 EXPOSE 16891
 EXPOSE 6881
 EXPOSE 6881/udp
-EXPOSE 5000
+EXPOSE 50000
 
 USER rtorrent
 
