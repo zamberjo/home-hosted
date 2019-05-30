@@ -7,7 +7,7 @@ services:
     image: rtorrent_rtorrent
     restart: unless-stopped
     ports:
-      - "50000:50000"
+      - "5000:5000"
       - "6881:6881"
       - "6881:6881/udp"
     environment:
@@ -24,7 +24,7 @@ services:
     networks:
       - rtorrent-network
     healthcheck:
-      test: nc -z 127.0.0.1 50000
+      test: nc -z 127.0.0.1 5000
       interval: 30s
       timeout: 30s
       retries: 3
