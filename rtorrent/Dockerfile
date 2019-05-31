@@ -6,7 +6,6 @@ ENV RT_UID=${RT_UID:-1000} \
 RUN addgroup -g $RT_GID rtorrent && \
     adduser -S -u $RT_UID -G rtorrent rtorrent && \
     apk add --no-cache rtorrent lighttpd && \
-    addgroup rtorrent lighttpd && \
     mkdir -p /home/rtorrent/rtorrent/config.d && \
     mkdir /home/rtorrent/rtorrent/.session && \
     mkdir /home/rtorrent/rtorrent/download && \
