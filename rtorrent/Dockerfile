@@ -14,6 +14,9 @@ RUN addgroup -g $RT_GID rtorrent && \
 
 COPY lighttpd.conf /tmp/
 RUN cat /tmp/lighttpd.conf >> /etc/lighttpd/lighttpd.conf
+RUN sed 's/\(server.username\s*\s=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttpd.conf
+RUN sed 's/\(server.groupname\s*\s=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttpd.conf
+RUN chown -R rtorrent. /etc/lighttpd/lighttpd.conf
 
 COPY --chown=rtorrent:rtorrent entrypoint.sh /entrypoint.sh
 RUN chmod a+x entrypoint.sh
