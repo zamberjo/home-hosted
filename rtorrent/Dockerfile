@@ -15,8 +15,8 @@ RUN addgroup -g $RT_GID rtorrent && \
 COPY lighttpd.conf /tmp/
 RUN cat /tmp/lighttpd.conf >> /etc/lighttpd/lighttpd.conf
 
-COPY --chown=rtorrent:rtorrent entrypoint.sh / && \
-    chmod a+x entrypoint.sh
+COPY --chown=rtorrent:rtorrent entrypoint.sh /entrypoint.sh
+RUN chmod a+x entrypoint.sh
 
 COPY --chown=rtorrent:rtorrent config.d/ /home/rtorrent/rtorrent/config.d/
 COPY --chown=rtorrent:rtorrent .rtorrent.rc /home/rtorrent/
