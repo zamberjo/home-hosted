@@ -8,4 +8,6 @@ system.daemon.set = true
 #execute.nothrow = chmod,770,(cat,(session.path),rpc.socket)
 
 #INET socket
-network.scgi.open_port = 0.0.0.0:16891
+# network.scgi.open_port = 0.0.0.0:16891
+scgi_local = /home/rtorrent/rtorrent/rpc.socket
+schedule = scgi_permission,0,0,"execute.nothrow=chmod,\"g+w,o=\",/home/rtorrent/rtorrent/rpc.socket"
