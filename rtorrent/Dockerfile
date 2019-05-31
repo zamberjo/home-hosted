@@ -37,8 +37,8 @@ ADD ./supervisord.conf /
 ADD ./lighttpd-start.sh /
 RUN chmod a+x /lighttpd-start.sh
 
-COPY --chown=rtorrent:rtorrent config.d/ /home/rtorrent/rtorrent/config.d/
-COPY --chown=rtorrent:rtorrent .rtorrent.rc /home/rtorrent/
+COPY config.d/ /home/rtorrent/rtorrent/config.d/
+COPY .rtorrent.rc /home/rtorrent/
 
 VOLUME /home/rtorrent/rtorrent/.session
 
