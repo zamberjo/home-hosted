@@ -23,10 +23,10 @@ RUN cat /tmp/lighttpd.conf >> /etc/lighttpd/lighttpd.conf
 # RUN chown -R rtorrent. /etc/lighttpd/lighttpd.conf
 # RUN chown -R rtorrent:rtorrent /var/log/lighttpd
 
-ADD ./supervisord.conf /etc/supervisor/conf.d/
+ADD ./supervisord.conf /
 
 ADD ./lighttpd-start.sh /
-# RUN chmod a+x /lighttpd-start.sh
+RUN chmod a+x /lighttpd-start.sh
 
 COPY --chown=rtorrent:rtorrent config.d/ /home/rtorrent/rtorrent/config.d/
 COPY --chown=rtorrent:rtorrent .rtorrent.rc /home/rtorrent/
@@ -45,4 +45,4 @@ USER rtorrent
 
 # ENTRYPOINT ["/entrypoint.sh"]
 # CMD ["rtorrent"]
-CMD ["supervisord"]
+CMD ["supervisord -c /supervisord.conf"]
