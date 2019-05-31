@@ -14,12 +14,15 @@ RUN addgroup -g $RT_GID rtorrent && \
 
 COPY lighttpd.conf /tmp/
 RUN cat /tmp/lighttpd.conf >> /etc/lighttpd/lighttpd.conf
-RUN sed -i 's/\(server.username\s*\s=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttpd.conf
-RUN sed -i 's/\(server.groupname\s*\s=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttpd.conf
-RUN chown -R rtorrent. /etc/lighttpd/lighttpd.conf
 
-COPY --chown=rtorrent:rtorrent entrypoint.sh /entrypoint.sh
-RUN chmod a+x entrypoint.sh
+RUN lighttpd -f /etc/lighttpd/lighttpd.conf
+# RUN sed -i 's/\(server.username\s*\s=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttpd.conf
+# RUN sed -i 's/\(server.groupname\s*\s=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttpd.conf
+# RUN sed -i 's/\(server.pid-file\s*\s=\s\).*/\1"/home/rtorrent/lighttpd.pid"/g' /etc/lighttpd/lighttpd.conf
+# RUN chown -R rtorrent. /etc/lighttpd/lighttpd.conf
+
+# COPY --chown=rtorrent:rtorrent entrypoint.sh /entrypoint.sh
+# RUN chmod a+x entrypoint.sh
 
 COPY --chown=rtorrent:rtorrent config.d/ /home/rtorrent/rtorrent/config.d/
 COPY --chown=rtorrent:rtorrent .rtorrent.rc /home/rtorrent/
@@ -34,5 +37,5 @@ EXPOSE 50000
 
 USER rtorrent
 
-ENTRYPOINT ["/entrypoint.sh"]
-# CMD ["rtorrent"]
+# ENTRYPOINT ["/entrypoint.sh"]
+CMD ["rtorrent"]
