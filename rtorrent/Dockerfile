@@ -45,4 +45,4 @@ USER rtorrent
 
 # ENTRYPOINT ["/entrypoint.sh"]
 # CMD ["rtorrent"]
-CMD ["supervisord -c /supervisord.conf"]
+CMD ["supervisord", "-c", "/supervisord.conf"]
