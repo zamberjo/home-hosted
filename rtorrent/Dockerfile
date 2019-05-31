@@ -41,6 +41,8 @@ EXPOSE 50000
 
 USER rtorrent
 
+WORKDIR /tmp
+
 # RUN touch /home/rtorrent/lighttpd.pid
 
 # ENTRYPOINT ["/entrypoint.sh"]
