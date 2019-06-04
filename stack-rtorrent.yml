@@ -74,6 +74,7 @@ services:
     volumes:
       - radarr-config-volume:/config
       - radarr-movies-volume:/movies
+      - rtorrent-downloads-volume:/downloads
       - rtorrent-watch-volume:/watch
     networks:
       - rtorrent-network
@@ -88,32 +89,32 @@ services:
       - 'traefik.frontend.passHostHeader=true'
       - 'traefik.docker.network=proxy-network'
 
-  # sonarr:
-  #   image: linuxserver/sonarr
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8989:8989"
-  #   environment:
-  #     - PUID=${RTORRENT_UID:-1000}
-  #     - PGID=${RTORRENT_UID:-1000}
-  #     - TZ=Europe/Madrid
-  #   networks:
-  #     - rtorrent-network
-  #     - proxy-network
-  #     # - jackett-network
-  #   volumes:
-  #     - rtorrent-watch-volume:/watch
-  #     - rtorrent-downloads-volume:/downloads
-  #     - sonarr-volume:/config
-  #   depends_on:
-  #     - rtorrent
-  #     - jackett
-  #   labels:
-  #     - 'traefik.enable=true'
-  #     - 'traefik.port=8989'
-  #     - 'traefik.frontend.rule=Host:sonarr.${DOMAIN}'
-  #     - 'traefik.frontend.passHostHeader=true'
-  #     - 'traefik.docker.network=proxy-network'
+  sonarr:
+    image: linuxserver/sonarr
+    restart: unless-stopped
+    ports:
+      - "8989:8989"
+    environment:
+      - PUID=${RTORRENT_UID:-1000}
+      - PGID=${RTORRENT_UID:-1000}
+      - TZ=Europe/Madrid
+    networks:
+      - rtorrent-network
+      - proxy-network
+    volumes:
+      - sonarr-config-volume:/config
+      - sonarr-tvshows-volume:/tv
+      - rtorrent-downloads-volume:/downloads
+      - rtorrent-watch-volume:/watch
+    depends_on:
+      - rtorrent
+      - jackett
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=8989'
+      - 'traefik.frontend.rule=Host:sonarr.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
 
   jackett:
     image: linuxserver/jackett
@@ -150,7 +151,9 @@ volumes:
     external: True
   radarr-movies-volume:
     external: True
-  sonarr-volume:
+  sonarr-config-volume:
+    external: True
+  sonarr-tvshows-volume:
     external: True
   jackett-config-volume:
     external: True

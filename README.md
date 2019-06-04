@@ -27,7 +27,8 @@ docker network create redis-network
 - `docker volume create --name rtorrent-watch-volume -d local -o o=bind -o type=none -o device=$HOME/watch`
 - `docker volume create --name radarr-config-volume -d local -o o=bind -o type=none -o device=$HOME/radarr`
 - `docker volume create --name radarr-movies-volume -d local -o o=bind -o type=none -o device=$HOME/downloads/movies`
-- `docker volume create --name sonarr-volume -d local -o o=bind -o type=none -o device=$HOME/sonarr`
+- `docker volume create --name sonarr-config-volume -d local -o o=bind -o type=none -o device=$HOME/sonarr`
+- `docker volume create --name sonarr-tvshows-volume -d local -o o=bind -o type=none -o device=$HOME/downloads/tvshows`
 - `docker volume create --name jackett-blackhole-volume -d local -o o=bind -o type=none -o device=$HOME/jackett/blackhole`
 - `docker volume create --name jackett-config-volume -d local -o o=bind -o type=none -o device=$HOME/jackett/config`
 - `docker-compose -f stack-rtorrent.yml -p rtorrent up -d`
@@ -36,8 +37,9 @@ docker network create redis-network
 - *USE*: `tvshows` and `movies` tags
 - *FRONTENDS*:
   - https://flood.${DOMAIN}
-  - https://couchpotato.${DOMAIN}
-  - localhost:9117/UI/Dashboard
+  - https://radarr.${DOMAIN}
+  - https://sonarr.${DOMAIN}
+  - https://jackett.${DOMAIN}
 
 
 ## Deploy Plex
