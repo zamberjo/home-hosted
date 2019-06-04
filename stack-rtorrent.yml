@@ -21,11 +21,11 @@ services:
       - rtorrent-volume:/home/rtorrent/rtorrent/
     networks:
       - rtorrent-network
-    healthcheck:
-      test: nc -z 127.0.0.1 16891
-      interval: 30s
-      timeout: 30s
-      retries: 3
+    # healthcheck:
+    #   test: nc -z 127.0.0.1 16891
+    #   interval: 30s
+    #   timeout: 30s
+    #   retries: 3
 
   flood:
     build:
