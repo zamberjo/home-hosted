@@ -74,7 +74,7 @@ services:
     volumes:
       - radarr-config-volume:/config
       - radarr-movies-volume:/movies
-      - rtorrent-downloads-volume:/downloads
+      - rtorrent-downloads-volume:/downloads:z
       - rtorrent-watch-volume:/watch
     networks:
       - rtorrent-network
@@ -104,7 +104,7 @@ services:
     volumes:
       - sonarr-config-volume:/config
       - sonarr-tvshows-volume:/tv
-      - rtorrent-downloads-volume:/downloads
+      - rtorrent-downloads-volume:/downloads:z
       - rtorrent-watch-volume:/watch
     depends_on:
       - rtorrent
