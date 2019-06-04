@@ -27,7 +27,7 @@ COPY --chown=rtorrent:rtorrent .rtorrent.rc /home/rtorrent/
 VOLUME /home/rtorrent/rtorrent/.session
 
 EXPOSE 80
-EXPOSE 16891
+# EXPOSE 16891
 EXPOSE 6881
 EXPOSE 6881/udp
 EXPOSE 50000
