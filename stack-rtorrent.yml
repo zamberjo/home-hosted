@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     ports:
       - "50000:50000"
-      - "16891:16891"
+      # - "16891:16891"
       - "6881:6881"
       - "6881:6881/udp"
     environment:
@@ -21,19 +21,19 @@ services:
       - rtorrent-volume:/home/rtorrent/rtorrent/
     networks:
       - rtorrent-network
-    healthcheck:
-      test: nc -z 127.0.0.1 16891
-      interval: 30s
-      timeout: 30s
-      retries: 3
+    # healthcheck:
+    #   test: nc -z 127.0.0.1 16891
+    #   interval: 30s
+    #   timeout: 30s
+    #   retries: 3
 
   flood:
     build:
       context: ./flood
     restart: unless-stopped
     image: rtorrent_flood
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
     volumes:
       - flood-volume:/data
       - rtorrent-volume:/rtorrent
@@ -65,8 +65,8 @@ services:
   radarr:
     image: linuxserver/radarr
     restart: unless-stopped
-    ports:
-      - 7878:7878
+    # ports:
+    #   - 7878:7878
     environment:
       - PUID=${RTORRENT_UID:-1000}
       - PGID=${RTORRENT_UID:-1000}
@@ -92,8 +92,8 @@ services:
   sonarr:
     image: linuxserver/sonarr
     restart: unless-stopped
-    ports:
-      - "8989:8989"
+    # ports:
+    #   - "8989:8989"
     environment:
       - PUID=${RTORRENT_UID:-1000}
       - PGID=${RTORRENT_UID:-1000}
@@ -127,8 +127,8 @@ services:
       - jackett-blackhole-volume:/downloads
     networks:
       - proxy-network
-    ports:
-      - 9117:9117
+    # ports:
+    #   - 9117:9117
     restart: unless-stopped
     depends_on:
       - rtorrent
