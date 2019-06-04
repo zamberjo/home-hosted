@@ -7,24 +7,22 @@ services:
     image: rtorrent_rtorrent
     restart: unless-stopped
     ports:
-      - "5000:5000"
-      - "6890-6890:6890-6890"
+      - "50000:50000"
+      - "16891:16891"
+      - "6881:6881"
       - "6881:6881/udp"
     environment:
       - RT_UID=${RTORRENT_UID:-1000}
       - RT_GID=${RTORRENT_GID:-1000}
-      # - RT_LOG_LEVEL=${RTORRENT_LOG_LEVEL:-info}
-      # - RT_PORT_RANDOM=${RT_PORT_RANDOM:-no}
-      # - RT_DHT_PORT=${RTORRENT_DHT_PORT:-6881}
     volumes:
-      - rtorrent-incoming-volume:/data/incoming
-      - rtorrent-session-volume:/data/session
-      - rtorrent-downloads-volume:/data/downloads:z
-      - rtorrent-watch-volume:/data/watch
+      - rtorrent-session-volume:/home/rtorrent/rtorrent/.session
+      - rtorrent-downloads-volume:/home/rtorrent/rtorrent/download:z
+      - rtorrent-watch-volume:/home/rtorrent/rtorrent/watch
+      - rtorrent-volume:/home/rtorrent/rtorrent/
     networks:
       - rtorrent-network
     healthcheck:
-      test: nc -z 127.0.0.1 5000
+      test: nc -z 127.0.0.1 16891
       interval: 30s
       timeout: 30s
       retries: 3
@@ -38,6 +36,7 @@ services:
       - "3000:3000"
     volumes:
       - flood-volume:/data
+      - rtorrent-volume:/rtorrent
     environment:
       - RTORRENT_VER=${RTORRENT_VER:-0.9.7}
       - LIBTORRENT_VER=${LIBTORRENT_VER:-0.13.7}
@@ -63,16 +62,105 @@ services:
       timeout: 30s
       retries: 3
 
+  radarr:
+    image: linuxserver/radarr
+    restart: unless-stopped
+    ports:
+      - 7878:7878
+    environment:
+      - PUID=${RTORRENT_UID:-1000}
+      - PGID=${RTORRENT_UID:-1000}
+      - TZ=Europe/Madrid
+    volumes:
+      - radarr-config-volume:/config
+      - radarr-movies-volume:/movies
+      - rtorrent-downloads-volume:/downloads:z
+      - rtorrent-watch-volume:/watch
+    networks:
+      - rtorrent-network
+      - proxy-network
+    depends_on:
+      - rtorrent
+      - jackett
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=7878'
+      - 'traefik.frontend.rule=Host:radarr.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
+
+  sonarr:
+    image: linuxserver/sonarr
+    restart: unless-stopped
+    ports:
+      - "8989:8989"
+    environment:
+      - PUID=${RTORRENT_UID:-1000}
+      - PGID=${RTORRENT_UID:-1000}
+      - TZ=Europe/Madrid
+    networks:
+      - rtorrent-network
+      - proxy-network
+    volumes:
+      - sonarr-config-volume:/config
+      - sonarr-tvshows-volume:/tv
+      - rtorrent-downloads-volume:/downloads:z
+      - rtorrent-watch-volume:/watch
+    depends_on:
+      - rtorrent
+      - jackett
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=8989'
+      - 'traefik.frontend.rule=Host:sonarr.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
+
+  jackett:
+    image: linuxserver/jackett
+    environment:
+      - PUID=${RTORRENT_UID:-1000}
+      - PGID=${RTORRENT_UID:-1000}
+      - TZ=Europe/Madrid
+    volumes:
+      - jackett-config-volume:/config
+      - jackett-blackhole-volume:/downloads
+    networks:
+      - proxy-network
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+    depends_on:
+      - rtorrent
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.port=9117'
+      - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
+      - 'traefik.frontend.passHostHeader=true'
+      - 'traefik.docker.network=proxy-network'
+
 volumes:
+  rtorrent-volume: {}
   rtorrent-session-volume: {}
-  rtorrent-watch-volume: {}
-  flood-volume: {}
-  rtorrent-incoming-volume:
-    external: true
   rtorrent-downloads-volume:
     external: true
+  flood-volume: {}
+  rtorrent-watch-volume:
+    external: True
+  radarr-config-volume:
+    external: True
+  radarr-movies-volume:
+    external: True
+  sonarr-config-volume:
+    external: True
+  sonarr-tvshows-volume:
+    external: True
+  jackett-config-volume:
+    external: True
+  jackett-blackhole-volume:
+    external: True
 
 networks:
-  rtorrent-network:
+  rtorrent-network: {}
   proxy-network:
     external: true

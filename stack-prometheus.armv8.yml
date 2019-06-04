@@ -6,12 +6,11 @@ services:
     build:
       context: ./prometheus
       args:
-        TAG: 2.7.1-armhf
+        TAG: 2.7.1-aarch64
         IMAGE: rycus86/prometheus
+
   cadvisor:
     build:
       context: ./cadvisor
       args:
         VERSION: v0.33.0
-  redis:
-    image: arm32v7/redis:5.0-stretch
