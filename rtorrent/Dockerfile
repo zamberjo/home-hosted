@@ -34,7 +34,7 @@ EXPOSE 6881
 EXPOSE 6881/udp
 EXPOSE 50000
 
-CMD ["lighttpd", "-f", "/etc/lighttpd/lighttpd.conf"]
+# CMD ["lighttpd", "-f", "/etc/lighttpd/lighttpd.conf"]
 
 # USER rtorrent
 
