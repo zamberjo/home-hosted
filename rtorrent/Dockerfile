@@ -19,8 +19,8 @@ RUN sed -i 's/\(server.groupname\s*=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttp
 # RUN sed -i 's/\(server.pid-file\s*=\s\).*/\1"\/home\/rtorrent\/lighttpd.pid"/g' /etc/lighttpd/lighttpd.conf
 # RUN chown -R rtorrent. /etc/lighttpd/lighttpd.conf
 
-# COPY --chown=rtorrent:rtorrent entrypoint.sh /entrypoint.sh
-# RUN chmod a+x entrypoint.sh
+COPY --chown=rtorrent:rtorrent entrypoint.sh /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
 RUN chown -R rtorrent:rtorrent /var/log/lighttpd
 
 COPY --chown=rtorrent:rtorrent config.d/ /home/rtorrent/rtorrent/config.d/
@@ -40,5 +40,5 @@ CMD ["lighttpd", "-f", "/etc/lighttpd/lighttpd.conf"]
 
 # RUN touch /home/rtorrent/lighttpd.pid
 
-# ENTRYPOINT ["/entrypoint.sh"]
-CMD ["lighttpd -f /etc/lighttpd/lighttpd.conf ; su - rtorrent -c 'rtorrent'"]
+ENTRYPOINT ["/entrypoint.sh"]
+# CMD ["lighttpd -f /etc/lighttpd/lighttpd.conf ; su - rtorrent -c 'rtorrent'"]
