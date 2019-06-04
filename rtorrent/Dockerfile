@@ -16,11 +16,11 @@ COPY lighttpd.conf /tmp/
 RUN cat /tmp/lighttpd.conf >> /etc/lighttpd/lighttpd.conf
 RUN sed -i 's/\(server.username\s*=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttpd.conf
 RUN sed -i 's/\(server.groupname\s*=\s\).*/\1"rtorrent"/g' /etc/lighttpd/lighttpd.conf
-RUN sed -i 's/\(server.pid-file\s*=\s\).*/\1"\/home\/rtorrent\/lighttpd.pid"/g' /etc/lighttpd/lighttpd.conf
-RUN chown -R rtorrent. /etc/lighttpd/lighttpd.conf
+# RUN sed -i 's/\(server.pid-file\s*=\s\).*/\1"\/home\/rtorrent\/lighttpd.pid"/g' /etc/lighttpd/lighttpd.conf
+# RUN chown -R rtorrent. /etc/lighttpd/lighttpd.conf
 
-COPY --chown=rtorrent:rtorrent entrypoint.sh /entrypoint.sh
-RUN chmod a+x entrypoint.sh
+# COPY --chown=rtorrent:rtorrent entrypoint.sh /entrypoint.sh
+# RUN chmod a+x entrypoint.sh
 RUN chown -R rtorrent:rtorrent /var/log/lighttpd
 
 COPY --chown=rtorrent:rtorrent config.d/ /home/rtorrent/rtorrent/config.d/
@@ -34,11 +34,11 @@ EXPOSE 6881
 EXPOSE 6881/udp
 EXPOSE 50000
 
-CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
+CMD ["lighttpd", "-f", "/etc/lighttpd/lighttpd.conf"]
 
 USER rtorrent
 
-RUN touch /home/rtorrent/lighttpd.pid
+# RUN touch /home/rtorrent/lighttpd.pid
 
 # ENTRYPOINT ["/entrypoint.sh"]
-CMD ["rtorrent"]
+CMD ["lighttpd", "-f", "/etc/lighttpd/lighttpd.conf", ";", "rtorrent"]
