@@ -16,7 +16,7 @@ services:
       - RT_GID=${RTORRENT_GID:-1000}
     volumes:
       - rtorrent-session-volume:/home/rtorrent/rtorrent/.session
-      - rtorrent-downloads-volume:/home/rtorrent/rtorrent/download:z
+      - rtorrent-downloads-volume:/home/rtorrent/rtorrent/download
       - rtorrent-watch-volume:/home/rtorrent/rtorrent/watch
       - rtorrent-volume:/home/rtorrent/rtorrent/
     networks:
@@ -74,7 +74,7 @@ services:
     volumes:
       - radarr-config-volume:/config
       - radarr-movies-volume:/movies
-      - rtorrent-downloads-volume:/downloads:z
+      - rtorrent-downloads-volume:/home/rtorrent/rtorrent/download:z
       - rtorrent-watch-volume:/watch
     networks:
       - rtorrent-network
@@ -104,7 +104,7 @@ services:
     volumes:
       - sonarr-config-volume:/config
       - sonarr-tvshows-volume:/tv
-      - rtorrent-downloads-volume:/downloads:z
+      - rtorrent-downloads-volume:/home/rtorrent/rtorrent/download:z
       - rtorrent-watch-volume:/watch
     depends_on:
       - rtorrent
@@ -127,17 +127,17 @@ services:
       - jackett-blackhole-volume:/downloads
     networks:
       - proxy-network
-    # ports:
-    #   - 9117:9117
+    ports:
+      - 9117:9117
     restart: unless-stopped
     depends_on:
       - rtorrent
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.port=9117'
-      - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
-      - 'traefik.frontend.passHostHeader=true'
-      - 'traefik.docker.network=proxy-network'
+    # labels:
+    #   - 'traefik.enable=true'
+    #   - 'traefik.port=9117'
+    #   - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
+    #   - 'traefik.frontend.passHostHeader=true'
+    #   - 'traefik.docker.network=proxy-network'
 
 volumes:
   rtorrent-volume: {}
