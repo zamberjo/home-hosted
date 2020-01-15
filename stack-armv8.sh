@@ -160,7 +160,8 @@ if [[ ${ARG_RTORRENT} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
         -f stack-rtorrent.yml \
         -f stack-rtorrent.armv8.yml \
         -p rtorrent \
-        up -d --build --force-recreate
+        up -d --build --force-recreate;
+    echo "Execute: rtorrent_lighttpd";
 fi
 
 if [[ ${ARG_PLEX} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
@@ -214,3 +215,5 @@ if [[ ${ARG_NEXTCLOUD} -eq 1 || ${ARG_ALL} -eq 1 ]]; then
         -p nextcloud_cron \
         up -d --build --force-recreate
 fi
+
+docker image prune -a -f

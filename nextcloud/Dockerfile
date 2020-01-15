@@ -1,4 +1,4 @@
-ARG TAG=16.0.1-apache
+ARG TAG=16.0.6-apache
 FROM nextcloud:${TAG}
 
 # https://nextcloud.com/blog/setup-cron-or-systemd-timers-for-the-nextcloud-preview-generator

@@ -7,7 +7,7 @@ services:
     build:
       context: ./nextcloud
       args:
-        TAG: 16.0.1-apache
+        TAG: 16.0.6-apache
     restart: unless-stopped
     environment:
       - POSTGRES_DB=nextcloud
@@ -30,6 +30,11 @@ services:
       - 'traefik.frontend.rule=Host:nextcloud.${DOMAIN}'
       - 'traefik.frontend.passHostHeader=true'
       - 'traefik.docker.network=proxy-network'
+      - 'traefik.frontend.headers.STSPreload=true'
+      - 'traefik.frontent.headers.STSSeconds=31536000'
+      - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+      - 'traefik.frontend.headers.forceSTSHeader=true'
+      - 'traefik.frontend.headers.referrerPolicy=no-referrer'
     networks:
       - postgres-network
       - proxy-network

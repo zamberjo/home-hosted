@@ -1,4 +1,4 @@
-version: '2.1'
+version: '2.3'
 
 services:
   traefik:
@@ -9,11 +9,15 @@ services:
       - CLOUDFLARE_API_KEY=${TRAEFIK_CLOUDFLARE_API_KEY}
     ports:
       - '80:80'
-      - '8443:8443'
+      - '443:443'
       - '8080:8080'
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
       - traefik-volume:/etc/traefik/acme
+      - type: tmpfs
+        target: /tmp
     command:
       - --checkNewVersion=false
       - --api
@@ -25,10 +29,10 @@ services:
       - --defaultEntryPoints=http,https
       # - --entryPoints=Name:panel Address::8080
       - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
-      - --entryPoints=Name:https Address::8443 TLS
-      - --logLevel=INFO
+      - --entryPoints=Name:https Address::443 TLS
+      - --logLevel=WARN
       - --accessLog
-      - --accessLog.filters.statusCodes=200,204,300-302,401,403,500
+      # - --accessLog.filters.statusCodes=200,204,300-302,401,403,500-502
       - --acme.acmeLogging
       - --acme.email=zamberjo@gmail.com
       - --acme.storage=/etc/traefik/acme/acme.json
@@ -39,7 +43,11 @@ services:
       - --acme.dnsChallenge.delayBeforeCheck=0
       - --acme.domains=*.${DOMAIN}
       - --acme.domains=${DOMAIN}
+      - --acme.domains=cotosgame.es
+      - --acme.domains=*.cotosgame.es
       - --acme.caServer=https://acme-v02.api.letsencrypt.org/directory
+      - --debug
+
     # labels:
     #   - 'traefik.enable=true'
     #   - 'traefik.port=8080'
