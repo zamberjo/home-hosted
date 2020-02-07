@@ -7,10 +7,10 @@ services:
         ARCH: arm64v8
 
   jackett:
-    image: linuxserver/jackett:arm64v8-v0.12.1572-ls49
+    image: linuxserver/jackett:arm64v8-v0.12.1732-ls53
 
   sonarr:
-    image: linuxserver/sonarr:arm64v8-2.0.0.5338-ls45
+    image: linuxserver/sonarr:arm64v8-2.0.0.5338-ls48
 
   radarr:
     image: linuxserver/radarr:arm64v8-5.14

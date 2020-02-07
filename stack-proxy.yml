@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   traefik:
-    image: traefik:v1.7.4
+    image: traefik:v1.7.7
     restart: unless-stopped
     environment:
       - CLOUDFLARE_EMAIL=${TRAEFIK_CLOUDFLARE_EMAIL}
@@ -33,6 +33,7 @@ services:
       - --logLevel=WARN
       - --accessLog
       # - --accessLog.filters.statusCodes=200,204,300-302,401,403,500-502
+      - --accessLog.filters.statusCodes=400-599
       - --acme.acmeLogging
       - --acme.email=zamberjo@gmail.com
       - --acme.storage=/etc/traefik/acme/acme.json
@@ -46,7 +47,6 @@ services:
       - --acme.domains=cotosgame.es
       - --acme.domains=*.cotosgame.es
       - --acme.caServer=https://acme-v02.api.letsencrypt.org/directory
-      - --debug
 
     # labels:
     #   - 'traefik.enable=true'
