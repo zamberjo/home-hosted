@@ -44,8 +44,6 @@ services:
       - --acme.dnsChallenge.delayBeforeCheck=0
       - --acme.domains=*.${DOMAIN}
       - --acme.domains=${DOMAIN}
-      - --acme.domains=cotosgame.es
-      - --acme.domains=*.cotosgame.es
       - --acme.caServer=https://acme-v02.api.letsencrypt.org/directory
 
     # labels:
