@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   traefik:
-    image: traefik:v1.7.7
+    image: traefik:v1.7.26
     restart: unless-stopped
     environment:
       - CLOUDFLARE_EMAIL=${TRAEFIK_CLOUDFLARE_EMAIL}
@@ -43,7 +43,7 @@ services:
       - --acme.dnsChallenge.provider=cloudflare
       - --acme.dnsChallenge.delayBeforeCheck=0
       - --acme.domains=*.${DOMAIN}
-      - --acme.domains=${DOMAIN}
+      # - --acme.domains=${DOMAIN}
       - --acme.caServer=https://acme-v02.api.letsencrypt.org/directory
 
     # labels:
