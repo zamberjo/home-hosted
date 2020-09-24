@@ -1,65 +1,49 @@
-version: '2.3'
+version: '3.3'
 
 services:
-  traefik:
-    image: traefik:v1.7.7
-    restart: unless-stopped
-    environment:
-      - CLOUDFLARE_EMAIL=${TRAEFIK_CLOUDFLARE_EMAIL}
-      - CLOUDFLARE_API_KEY=${TRAEFIK_CLOUDFLARE_API_KEY}
-    ports:
-      - '80:80'
-      - '443:443'
-      - '8080:8080'
-    volumes:
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-      - traefik-volume:/etc/traefik/acme
-      - type: tmpfs
-        target: /tmp
-    command:
-      - --checkNewVersion=false
-      - --api
-      # - --api.entrypoint=panel
-      - --api.dashboard
-      - --docker
-      - --docker.watch
-      - --docker.exposedbydefault=false
-      - --defaultEntryPoints=http,https
-      # - --entryPoints=Name:panel Address::8080
-      - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
-      - --entryPoints=Name:https Address::443 TLS
-      - --logLevel=WARN
-      - --accessLog
-      # - --accessLog.filters.statusCodes=200,204,300-302,401,403,500-502
-      - --accessLog.filters.statusCodes=400-599
-      - --acme.acmeLogging
-      - --acme.email=zamberjo@gmail.com
-      - --acme.storage=/etc/traefik/acme/acme.json
-      - --acme.entryPoint=https
-      - --acme.httpChallenge=false
-      - --acme.dnsChallenge
-      - --acme.dnsChallenge.provider=cloudflare
-      - --acme.dnsChallenge.delayBeforeCheck=0
-      - --acme.domains=*.${DOMAIN}
-      - --acme.domains=${DOMAIN}
-      - --acme.caServer=https://acme-v02.api.letsencrypt.org/directory
 
-    # labels:
-    #   - 'traefik.enable=true'
-    #   - 'traefik.port=8080'
-    #   - 'traefik.frontend.entryPoints=panel'
-    #   - 'traefik.frontend.rule=Host:traefik.${DOMAIN}'
-    #   - 'traefik.frontend.passHostHeader=true'
-    #   - 'traefik.frontend.auth.basic=${BASIC_AUTH}'
-    #   - 'traefik.docker.network=proxy-network'
+  traefik:
+    image: "traefik:v2.3"
+    container_name: "traefik"
+    command:
+      - "--log.level=WARN"
+      - "--api"
+      - "--api.insecure=true"
+      - "--entrypoints.traefik.address=:8888"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls.certresolver=myresolver"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=${CF_API_EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.storage=acme.json"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_API_KEY=${CF_API_KEY}
+    ports:
+      - "8080:80"
+      - '8443:443'
+      - "8888:8888"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - traefik-volume:/etc/traefik/acme
+    labels:
+      traefik.enable: true
+      # Dashboard
+      traefik.http.routers.traefik.rule: Host(`traefik.${DOMAIN}`)
+      traefik.http.routers.traefik.entrypoints: websecure
+      traefik.http.routers.traefik.service: api@internal
+      traefik.http.routers.traefik.middlewares: auth
+      traefik.http.middlewares.auth.basicauth.users: ${BASIC_AUTH}
     networks:
       - proxy-network
-    logging:
-      driver: 'journald'
-      options:
-        tag: 'traefik'
+    # logging:
+    #   driver: 'journald'
+    #   options:
+    #     tag: 'traefik'
 
 volumes:
   traefik-volume: {}

@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   homeassistant:
-    image: homeassistant/raspberrypi3-homeassistant:0.113.0b0
+    image: homeassistant/raspberrypi3-homeassistant:0.115.2
     privileged: true
     environment:
       - TZ="Europe/Madrid"
